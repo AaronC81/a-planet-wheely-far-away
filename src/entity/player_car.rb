@@ -3,6 +3,8 @@ class PlayerCar < OZ::Entity
 
   VERTICAL_CENTRE = (Window::HEIGHT - IMAGE.height) / 2
 
+  VERTICAL_SPEED = 4
+
   def initialize(**kw)
     super(
       position: OZ::Point.new(50, VERTICAL_CENTRE),
@@ -11,5 +13,29 @@ class PlayerCar < OZ::Entity
       },
       **kw
     )
+  end
+
+  def update
+    vertical_velocity = 0
+    if Gosu.button_down?(Gosu::KB_W)
+      vertical_velocity -= VERTICAL_SPEED
+    end
+    if Gosu.button_down?(Gosu::KB_S)
+      vertical_velocity += VERTICAL_SPEED
+    end
+
+    new_y = self.position.y + vertical_velocity
+    if new_y < RoadManager::BUILDINGS_START || new_y > Window::HEIGHT - IMAGE.height
+      vertical_velocity = 0
+    end
+
+    self.position.y += vertical_velocity
+    if vertical_velocity > 0
+      self.rotation = 5
+    elsif vertical_velocity < 0
+      self.rotation = -5
+    else
+      self.rotation = 0
+    end
   end
 end
