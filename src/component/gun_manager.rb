@@ -30,6 +30,8 @@ class GunManager < OZ::Component
     @ammo = MAX_AMMO
 
     @is_reloading = false
+
+    @cylinder_angle = 0
   end
 
   def update
@@ -48,6 +50,7 @@ class GunManager < OZ::Component
       if @ammo > 0
         # Cancel reload
         @is_reloading = false
+        @cylinder_angle = 0
 
         @ammo -= 1
 
@@ -73,7 +76,10 @@ class GunManager < OZ::Component
         AssetLoader.play_sample("sample/revolver_reload_start.wav")
 
         # Fixed delay - discourages reloading after every shot, like flipping the cylinder
-        OZ::Scheduler.wait 15
+        15.times do
+          @cylinder_angle += 2
+          OZ::Scheduler.wait 1
+        end
         next unless @is_reloading && reload_id == @reload_id
 
         while @ammo < MAX_AMMO
@@ -88,17 +94,42 @@ class GunManager < OZ::Component
 
         OZ::Scheduler.wait 3
         AssetLoader.play_sample("sample/revolver_spin.wav")
+
+        # Spin animation
+        15.times do
+          @cylinder_angle += 80
+          OZ::Scheduler.wait 1
+        end
+
+        @cylinder_angle = 270
+        OZ::Scheduler.wait 1
+        @cylinder_angle = 320
+        OZ::Scheduler.wait 1
+        @cylinder_angle = 340
+        OZ::Scheduler.wait 1
+        @cylinder_angle = 350
+        OZ::Scheduler.wait 1
+        @cylinder_angle = 355
+        OZ::Scheduler.wait 1
+        @cylinder_angle = 358
+        OZ::Scheduler.wait 1
+        @cylinder_angle = 0
       end
     end
   end
 
   def draw
-    CYLINDER_SPRITE.draw(30, 30, 100000)
-    ROUND_POSITIONS.each.with_index do |pos, i|
-      spent_ammo = MAX_AMMO - @ammo
+    x = 30
+    y = 30
 
-      sprite = i >= spent_ammo ? ROUND_LIVE_SPRITE : ROUND_SPENT_SPRITE
-      sprite.draw(30 + pos.x, 30 + pos.y, 100000)
+    Gosu.rotate(@cylinder_angle, x + CYLINDER_SPRITE.width / 2, y + CYLINDER_SPRITE.height / 2) do
+      CYLINDER_SPRITE.draw(x, y, 100000)
+      ROUND_POSITIONS.each.with_index do |pos, i|
+        spent_ammo = MAX_AMMO - @ammo
+
+        sprite = i >= spent_ammo ? ROUND_LIVE_SPRITE : ROUND_SPENT_SPRITE
+        sprite.draw(x + pos.x, y + pos.y, 100000)
+      end
     end
 
     @recent_shots.each do |shot|
