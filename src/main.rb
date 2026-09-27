@@ -21,7 +21,7 @@ class Window < OZ::Window
   def initialize
     super(WIDTH, HEIGHT)
 
-    $speed = 3
+    $speed = 8
 
     RoadManager.new.register
     GunManager.new.register

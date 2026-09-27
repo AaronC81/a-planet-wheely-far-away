@@ -1,4 +1,6 @@
 class PlayerCar < OZ::Entity
+  MAX_HP = 5
+
   IMAGE = AssetLoader.load_image("player_car.png")
 
   VERTICAL_CENTRE = (Window::HEIGHT - IMAGE.height) / 2
@@ -13,7 +15,11 @@ class PlayerCar < OZ::Entity
       },
       **kw
     )
+
+    @hp = 5
   end
+
+  attr_reader :hp
 
   def update
     vertical_velocity = 0
@@ -37,5 +43,11 @@ class PlayerCar < OZ::Entity
     else
       self.rotation = 0
     end
+  end
+
+  def hit
+    # TODO: death logic
+    # TODO: animation or something
+    @hp -= 1
   end
 end

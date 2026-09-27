@@ -18,7 +18,7 @@ class Obstacle < OZ::Entity
 
   def check_collision
     if $player.bounding_box.overlaps?(bounding_box)
-      puts "COLLIDE!" # TODO
+      $player.hit
       unregister
     end
   end

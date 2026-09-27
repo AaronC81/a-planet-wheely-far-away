@@ -7,6 +7,9 @@ class GunManager < OZ::Component
   ROUND_LIVE_SPRITE = AssetLoader.load_image("ui/round_live.png")
   ROUND_SPENT_SPRITE = AssetLoader.load_image("ui/round_spent.png")
 
+  HEART_FULL_SPRITE = AssetLoader.load_image("ui/heart_full.png")
+  HEART_EMPTY_SPRITE = AssetLoader.load_image("ui/heart_empty.png")
+
   EXPORT_SCALE = 0.35
   # All centres
   ROUND_POSITIONS = [
@@ -135,6 +138,13 @@ class GunManager < OZ::Component
     @recent_shots.each do |shot|
       Gosu.draw_line(shot.origin.x, shot.origin.y, Gosu::Color::YELLOW, shot.target.x, shot.target.y, Gosu::Color::YELLOW)
       Gosu.draw_rect(shot.target.x - 4, shot.target.y - 4, 9, 9, Gosu::Color::YELLOW)
+    end
+
+    # We're drawing UI so we might as well be responsible for HP as well. Who cares really
+    lost_hp = PlayerCar::MAX_HP - $player.hp
+    PlayerCar::MAX_HP.times do |i|
+      sprite = lost_hp > i ? HEART_EMPTY_SPRITE : HEART_FULL_SPRITE
+      sprite.draw(Window::WIDTH - 30 - 100 * (i + 1), y, 100000)
     end
   end
 end
