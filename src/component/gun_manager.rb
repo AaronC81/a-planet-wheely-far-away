@@ -55,7 +55,7 @@ class GunManager < OZ::Component
         @ammo -= 1
 
         # TODO: iterate "shootables" to find if we hit one, somehow (maybe in a group?)
-        @recent_shots << RecentShot.new($train.bounding_box.center, OZ::Input.cursor, 0)
+        @recent_shots << RecentShot.new($player.bounding_box.center, OZ::Input.cursor, 0)
 
         AssetLoader.play_sample("sample/revolver_shot.wav")
       else

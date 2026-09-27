@@ -10,9 +10,11 @@ end
 require_relative 'asset_loader'
 
 require_relative 'entity/player_car'
+require_relative 'entity/obstacle'
 
 require_relative 'component/road_manager'
 require_relative 'component/gun_manager'
+require_relative 'component/spawn_manager'
 
 class Window < OZ::Window
   def initialize
@@ -22,8 +24,9 @@ class Window < OZ::Window
 
     RoadManager.new.register
     GunManager.new.register
+    SpawnManager.new.register
 
-    $train = PlayerCar.new.register
+    $player = PlayerCar.new.register
   end
 
   def update

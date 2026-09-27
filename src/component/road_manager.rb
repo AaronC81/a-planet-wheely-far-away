@@ -10,6 +10,10 @@ class RoadManager < OZ::Component
 
   BUILDINGS_START = VERTICAL_CENTRE - 100
 
+  def self.rand_y_for_obstacle(height)
+    rand(BUILDINGS_START...(Window::HEIGHT - height))
+  end
+
   # Small overlap between foreground buildings to ensure there are no gaps
   FG_OVERLAP = 3
 
