@@ -9,9 +9,9 @@ end
 
 require_relative 'asset_loader'
 
-require_relative 'entity/train_locomotive'
+require_relative 'entity/player_car'
 
-require_relative 'component/track_manager'
+require_relative 'component/road_manager'
 require_relative 'component/gun_manager'
 
 class Window < OZ::Window
@@ -20,10 +20,10 @@ class Window < OZ::Window
 
     $speed = 3
 
-    TrackManager.new.register
+    RoadManager.new.register
     GunManager.new.register
 
-    $train = TrainLocomotive.new.register
+    $train = PlayerCar.new.register
   end
 
   def update

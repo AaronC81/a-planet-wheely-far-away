@@ -1,6 +1,5 @@
-# TODO: Add carriages too
-class TrainLocomotive < OZ::Entity
-  IMAGE = AssetLoader.load_image("locomotive.png")
+class PlayerCar < OZ::Entity
+  IMAGE = AssetLoader.load_image("player_car.png")
 
   VERTICAL_CENTRE = (Window::HEIGHT - IMAGE.height) / 2
 
