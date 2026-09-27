@@ -3,6 +3,21 @@ class GunManager < OZ::Component
 
   RecentShot = Struct.new('RecentShot', :origin, :target, :age)
 
+  CYLINDER_SPRITE = AssetLoader.load_image("ui/cylinder.png")
+  ROUND_LIVE_SPRITE = AssetLoader.load_image("ui/round_live.png")
+  ROUND_SPENT_SPRITE = AssetLoader.load_image("ui/round_spent.png")
+
+  EXPORT_SCALE = 0.35
+  # All centres
+  ROUND_POSITIONS = [
+    OZ::Point.new(118 * EXPORT_SCALE, 21 * EXPORT_SCALE),
+    OZ::Point.new(200 * EXPORT_SCALE, 71 * EXPORT_SCALE),
+    OZ::Point.new(200 * EXPORT_SCALE, 165 * EXPORT_SCALE),
+    OZ::Point.new(118 * EXPORT_SCALE, 213 * EXPORT_SCALE),
+    OZ::Point.new(34 * EXPORT_SCALE, 165 * EXPORT_SCALE),
+    OZ::Point.new(34 * EXPORT_SCALE, 71 * EXPORT_SCALE),
+  ]
+
   # Preload
   AssetLoader.load_sample("sample/revolver_reload_start.wav")
   AssetLoader.load_sample("sample/revolver_reload_each.wav")
@@ -78,11 +93,12 @@ class GunManager < OZ::Component
   end
 
   def draw
-    # TODO: temporary, better UI later
-    font = AssetLoader.load_system_font("Arial", 24)
-    font.draw_text("#{@ammo}/#{MAX_AMMO}", 20, 20, 100)
-    if @is_reloading
-      font.draw_text("Reloading", 20, 50, 100)
+    CYLINDER_SPRITE.draw(30, 30, 100000)
+    ROUND_POSITIONS.each.with_index do |pos, i|
+      spent_ammo = MAX_AMMO - @ammo
+
+      sprite = i >= spent_ammo ? ROUND_LIVE_SPRITE : ROUND_SPENT_SPRITE
+      sprite.draw(30 + pos.x, 30 + pos.y, 100000)
     end
 
     @recent_shots.each do |shot|
