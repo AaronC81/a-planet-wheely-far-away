@@ -15,6 +15,7 @@ require_relative 'entity/obstacle'
 require_relative 'component/road_manager'
 require_relative 'component/gun_manager'
 require_relative 'component/spawn_manager'
+require_relative 'component/intro'
 
 class Window < OZ::Window
   def initialize
@@ -25,6 +26,9 @@ class Window < OZ::Window
     RoadManager.new.register
     GunManager.new.register
     SpawnManager.new.register
+
+    # TODO: wire this up in some sensible way
+    # Intro.new.start
 
     $player = PlayerCar.new.register
   end
