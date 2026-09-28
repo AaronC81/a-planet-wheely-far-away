@@ -24,8 +24,6 @@ class Enemy < OZ::Entity
     @hp = 0 if @hp < 0
 
     if @hp <= 0
-      unregister
-
       VfxManager.add_effect(
         image: AssetLoader.load_image("particles/smoke.png"),
         x: bounding_box.centre.x,
@@ -36,6 +34,10 @@ class Enemy < OZ::Entity
 
       AssetLoader.play_sample("sample/poof.wav")
     end
+  end
+
+  def dead?
+    @hp <= 0
   end
 
   def update

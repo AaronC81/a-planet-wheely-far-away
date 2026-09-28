@@ -141,6 +141,8 @@ class GunManager < OZ::Component
         AssetLoader.play_sample("sample/revolver_hit_#{rand(1..4)}.wav")
       end
     end
+
+    SHOOTABLES_GROUP.items.reject!(&:dead?)
   end
 
   def draw

@@ -15,9 +15,5 @@ class EnemyBullet < OZ::Entity
   def update
     @position += @velocity
     @position.x -= $speed
-
-    if @position.x + image.width < 0 || @position.x > Window::WIDTH
-      unregister
-    end
   end
 end
