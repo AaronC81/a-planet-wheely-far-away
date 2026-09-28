@@ -1,10 +1,10 @@
 class Enemy < OZ::Entity
-  def initialize(hp:, fire_cooldown:, target_x:, fly_in_speed: 10, **kw)
+  def initialize(hp:, fire_buffer:, fire_cooldown:, target_x:, fly_in_speed: 10, **kw)
     super(**kw)
 
     @hp = hp
 
-    @fire_buffer = 120
+    @fire_buffer = fire_buffer
 
     @fire_cooldown = fire_cooldown
     @fire_cooldown_remaining = fire_cooldown

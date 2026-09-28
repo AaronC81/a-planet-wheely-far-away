@@ -14,6 +14,7 @@ require_relative 'entity/obstacle'
 require_relative 'entity/enemy_bullet'
 require_relative 'entity/enemy'
 require_relative 'entity/blue_enemy'
+require_relative 'entity/green_enemy'
 
 require_relative 'component/road_manager'
 require_relative 'component/gun_manager'

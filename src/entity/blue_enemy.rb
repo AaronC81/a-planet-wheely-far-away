@@ -7,6 +7,7 @@ class BlueEnemy < Enemy
         normal: OZ::Animation.static(IMAGE),
       },
       fire_cooldown: rand(40...90),
+      fire_buffer: rand(100...120),
       target_x: rand(900..1400),
       hp: 20,
       **kw

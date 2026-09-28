@@ -31,9 +31,15 @@ class SpawnManager < OZ::Component
 
         @timer = 30
       else
-        BlueEnemy.new(
-          position: OZ::Point.new(1900, RoadManager.rand_y_for_obstacle(BlueEnemy::IMAGE.height)),
-        ).register(GunManager::SHOOTABLES_GROUP)
+        if [true, false].sample
+          BlueEnemy.new(
+            position: OZ::Point.new(1900, RoadManager.rand_y_for_obstacle(BlueEnemy::IMAGE.height)),
+          ).register(GunManager::SHOOTABLES_GROUP)
+        else
+          GreenEnemy.new(
+            position: OZ::Point.new(1900, RoadManager.rand_y_for_obstacle(GreenEnemy::IMAGE.height)),
+          ).register(GunManager::SHOOTABLES_GROUP)
+        end
 
         @timer = 120
       end
