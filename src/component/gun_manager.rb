@@ -89,7 +89,7 @@ class GunManager < OZ::Component
         next unless @is_reloading && reload_id == @reload_id
 
         while @ammo < MAX_AMMO
-          OZ::Scheduler.wait 15
+          OZ::Scheduler.wait 12
           next unless @is_reloading && reload_id == @reload_id
 
           AssetLoader.play_sample("sample/revolver_reload_each.wav")
