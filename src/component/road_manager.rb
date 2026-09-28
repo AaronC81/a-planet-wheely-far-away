@@ -1,12 +1,12 @@
 class RoadManager < OZ::Component
-  STRAIGHT_IMAGE = AssetLoader.load_image("straight_track.png")
+  ROAD_IMAGE = AssetLoader.load_image("road.png", retro: true)
 
   # TODO: Many more!
   BG_BUILDINGS = 2.times.map { |i| AssetLoader.load_image("buildings/bg_building_#{i+1}.png") } \
     + 4.times.map { |i| AssetLoader.load_image("buildings/bg_building_spacer.png") }
   FG_BUILDINGS = 4.times.map { |i| AssetLoader.load_image("buildings/fg_building_#{i+1}.png") }
 
-  VERTICAL_CENTRE = (Window::HEIGHT - STRAIGHT_IMAGE.height) / 2
+  VERTICAL_CENTRE = Window::HEIGHT / 2
 
   BUILDINGS_START = VERTICAL_CENTRE - 100
 
@@ -28,7 +28,8 @@ class RoadManager < OZ::Component
 
   def update
     @road_offset -= $speed
-    @road_offset = @road_offset % STRAIGHT_IMAGE.width
+    # 20px of padding is built into the sprite for more seamless overlap
+    @road_offset = @road_offset % (ROAD_IMAGE.width - 20)
 
     @fg_offset -= $speed * 0.25
     if -@fg_offset > (@fg_sprites[0].width - FG_OVERLAP)
@@ -55,7 +56,7 @@ class RoadManager < OZ::Component
         @bg_sprites << BG_BUILDINGS.sample
       end
 
-      @bg_sprites[i].draw(x, BUILDINGS_START - @bg_sprites[i].height, 999)
+      @bg_sprites[i].draw(x, BUILDINGS_START - @bg_sprites[i].height)
       x += @bg_sprites[i].width
       i += 1
     end
@@ -69,15 +70,15 @@ class RoadManager < OZ::Component
         @fg_sprites << FG_BUILDINGS.sample
       end
 
-      @fg_sprites[i].draw(x, BUILDINGS_START - @fg_sprites[i].height, 1000)
+      @fg_sprites[i].draw(x, BUILDINGS_START - @fg_sprites[i].height)
       x += @fg_sprites[i].width - FG_OVERLAP
       i += 1
     end
 
-    x = @road_offset - STRAIGHT_IMAGE.width
+    x = @road_offset - ROAD_IMAGE.width
     while x < Window::WIDTH
-      STRAIGHT_IMAGE.draw(x, VERTICAL_CENTRE)
-      x += STRAIGHT_IMAGE.width
+      ROAD_IMAGE.draw(x, BUILDINGS_START - 20)
+      x += ROAD_IMAGE.width - 20
     end
   end
 end
