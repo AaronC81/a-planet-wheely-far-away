@@ -5,7 +5,7 @@ class PlayerCar < OZ::Entity
 
   VERTICAL_CENTRE = (Window::HEIGHT - IMAGE.height) / 2
 
-  VERTICAL_SPEED = 4
+  VERTICAL_SPEED = 6
 
   def initialize(**kw)
     super(
@@ -37,9 +37,9 @@ class PlayerCar < OZ::Entity
 
     self.position.y += vertical_velocity
     if vertical_velocity > 0
-      self.rotation = 5
+      self.rotation = 2
     elsif vertical_velocity < 0
-      self.rotation = -5
+      self.rotation = -2
     else
       self.rotation = 0
     end
