@@ -8,8 +8,15 @@ class SpawnManager < OZ::Component
   end
 
   def update
-    OBSTACLES_GROUP.items.each do |obstacle|
-      obstacle.check_collision
+    OBSTACLES_GROUP.items.reject! do |obstacle|
+      if $player.bounding_box.overlaps?(obstacle.bounding_box)
+        $player.hit
+        true
+      elsif obstacle.position.x + obstacle.image.width < 0
+        true
+      else
+        false
+      end
     end
 
     @timer -= 1

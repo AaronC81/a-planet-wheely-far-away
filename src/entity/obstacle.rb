@@ -10,17 +10,6 @@ class Obstacle < OZ::Entity
 
   def update
     self.position.x -= $speed
-
-    if self.position.x + image.width < 0
-      unregister
-    end
-  end
-
-  def check_collision
-    if $player.bounding_box.overlaps?(bounding_box)
-      $player.hit
-      unregister
-    end
   end
 end
 
