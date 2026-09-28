@@ -11,6 +11,8 @@ require_relative 'asset_loader'
 
 require_relative 'entity/player_car'
 require_relative 'entity/obstacle'
+require_relative 'entity/enemy_bullet'
+require_relative 'entity/enemy'
 
 require_relative 'component/road_manager'
 require_relative 'component/gun_manager'
@@ -31,6 +33,14 @@ class Window < OZ::Window
     # Intro.new.start
 
     $player = PlayerCar.new.register
+
+    Enemy.new(
+      position: OZ::Point.new(1000, 500),
+      animations: {
+        normal: OZ::Animation.static(AssetLoader.load_image("enemies/blue_ufo.png")),
+      },
+      fire_cooldown: 60,
+    ).register(GunManager::SHOOTABLES_GROUP)
   end
 
   def update

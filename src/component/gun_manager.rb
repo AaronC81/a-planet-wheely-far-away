@@ -1,4 +1,6 @@
 class GunManager < OZ::Component
+  SHOOTABLES_GROUP = OZ::Group.new
+
   MAX_AMMO = 6
 
   RecentShot = Struct.new('RecentShot', :origin, :target, :age)
@@ -35,6 +37,8 @@ class GunManager < OZ::Component
     @is_reloading = false
 
     @cylinder_angle = 0
+
+    SHOOTABLES_GROUP.register
   end
 
   def update
@@ -57,7 +61,7 @@ class GunManager < OZ::Component
 
         @ammo -= 1
 
-        # TODO: iterate "shootables" to find if we hit one, somehow (maybe in a group?)
+        check_hit(OZ::Input.cursor)
         @recent_shots << RecentShot.new($player.bounding_box.center, OZ::Input.cursor, 0)
 
         AssetLoader.play_sample("sample/revolver_shot.wav")
@@ -117,6 +121,14 @@ class GunManager < OZ::Component
         @cylinder_angle = 358
         OZ::Scheduler.wait 1
         @cylinder_angle = 0
+      end
+    end
+  end
+
+  def check_hit(point)
+    SHOOTABLES_GROUP.items.each do |shootable|
+      if shootable.bounding_box.point_inside?(point)
+        shootable.inflict_gun_damage(5)
       end
     end
   end
