@@ -1,5 +1,5 @@
 class EnemyBullet < OZ::Entity
-  BULLET_SPRITE = AssetLoader.load_image("particles/alien_bullet.png")
+  BULLET_SPRITE = AssetLoader.load_image("particles/blue_bullet.png")
 
   def initialize(velocity:, **kw)
     super(
