@@ -11,6 +11,8 @@ class Enemy < OZ::Entity
   end
 
   def fire
+    AssetLoader.play_sample("sample/laser_pew.wav")
+
     EnemyBullet.new(
       position: bounding_box.centre,
       velocity: OZ::Point.new(-2, 0),
@@ -23,7 +25,16 @@ class Enemy < OZ::Entity
 
     if @hp <= 0
       unregister
-      # TODO: explosion animation
+
+      VfxManager.add_effect(
+        image: AssetLoader.load_image("particles/smoke.png"),
+        x: bounding_box.centre.x,
+        y: bounding_box.centre.y,
+        rotation: rand(0...360),
+        duration: 0.3
+      )
+
+      AssetLoader.play_sample("sample/poof.wav")
     end
   end
 

@@ -17,6 +17,7 @@ require_relative 'entity/enemy'
 require_relative 'component/road_manager'
 require_relative 'component/gun_manager'
 require_relative 'component/spawn_manager'
+require_relative 'component/vfx_manager'
 require_relative 'component/intro'
 
 class Window < OZ::Window
@@ -34,20 +35,24 @@ class Window < OZ::Window
 
     $player = PlayerCar.new.register
 
+    5.times do |i|
     Enemy.new(
-      position: OZ::Point.new(1000, 500),
+      position: OZ::Point.new(1000, 500 + i * 50),
       animations: {
         normal: OZ::Animation.static(AssetLoader.load_image("enemies/blue_ufo.png")),
       },
-      fire_cooldown: 60,
+      fire_cooldown: rand(40...90),
     ).register(GunManager::SHOOTABLES_GROUP)
+    end
   end
 
   def update
+    VfxManager.update
     super
   end
 
   def draw
+    VfxManager.draw
     super
   end
 end

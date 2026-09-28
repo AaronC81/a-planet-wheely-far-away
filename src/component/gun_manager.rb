@@ -129,6 +129,16 @@ class GunManager < OZ::Component
     SHOOTABLES_GROUP.items.each do |shootable|
       if shootable.bounding_box.point_inside?(point)
         shootable.inflict_gun_damage(5)
+
+        VfxManager.add_effect(
+          image: AssetLoader.load_image("particles/hit_sparks.png"),
+          x: point.x,
+          y: point.y,
+          rotation: rand(0...360),
+          duration: 0.25,
+        )
+
+        AssetLoader.play_sample("sample/revolver_hit_#{rand(1..4)}.wav")
       end
     end
   end
