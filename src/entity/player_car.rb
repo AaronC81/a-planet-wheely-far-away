@@ -17,11 +17,24 @@ class PlayerCar < OZ::Entity
     )
 
     @hp = 5
+    @invulnerability_timer = 0
   end
 
   attr_reader :hp
 
   def update
+    if @invulnerability_timer > 0
+      @invulnerability_timer -= 1
+
+      if (@invulnerability_timer / 20) % 2 == 0
+        self.opacity = 0.5
+      else
+        self.opacity = 0.25
+      end
+    else
+      self.opacity = 1
+    end
+
     vertical_velocity = 0
     if Gosu.button_down?(Gosu::KB_W)
       vertical_velocity -= VERTICAL_SPEED
@@ -46,8 +59,24 @@ class PlayerCar < OZ::Entity
   end
 
   def hit
-    # TODO: death logic
-    # TODO: animation or something
-    @hp -= 1
+    if @invulnerability_timer <= 0
+      # TODO: death logic
+      # TODO: animation or something
+      @hp -= 1
+
+      5.times do
+        VfxManager.add_effect(
+          image: AssetLoader.load_image("particles/hit_sparks.png"),
+          x: bounding_box.origin.x + rand(0..bounding_box.width),
+          y: bounding_box.origin.y + rand(0..bounding_box.height),
+          rotation: rand(0...360),
+          duration: 0.75,
+        )
+      end
+
+      AssetLoader.play_sample("sample/car_hit.wav")
+
+      @invulnerability_timer = 100
+    end
   end
 end
