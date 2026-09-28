@@ -1,8 +1,8 @@
 class Enemy < OZ::Entity
-  def initialize(fire_cooldown:, target_x:, fly_in_speed: 10, **kw)
+  def initialize(hp:, fire_cooldown:, target_x:, fly_in_speed: 10, **kw)
     super(**kw)
 
-    @hp = 20
+    @hp = hp
 
     @fire_buffer = 120
 
@@ -16,12 +16,7 @@ class Enemy < OZ::Entity
   end
 
   def fire
-    AssetLoader.play_sample("sample/laser_pew.wav")
-
-    EnemyBullet.new(
-      position: bounding_box.centre,
-      velocity: OZ::Point.new(-2, 0),
-    ).register(SpawnManager::OBSTACLES_GROUP)
+    raise 'abstract'
   end
 
   def inflict_gun_damage(amount)

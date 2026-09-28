@@ -1,13 +1,6 @@
 class EnemyBullet < OZ::Entity
-  BULLET_SPRITE = AssetLoader.load_image("particles/blue_bullet.png")
-
   def initialize(velocity:, **kw)
-    super(
-      animations: {
-        normal: OZ::Animation.static(BULLET_SPRITE),
-      },
-      **kw,
-    )
+    super(**kw)
     
     @velocity = velocity
   end

@@ -31,14 +31,8 @@ class SpawnManager < OZ::Component
 
         @timer = 30
       else
-        image = AssetLoader.load_image("enemies/blue_ufo.png")
-        Enemy.new(
-          position: OZ::Point.new(1900, RoadManager.rand_y_for_obstacle(image.height)),
-          animations: {
-            normal: OZ::Animation.static(image),
-          },
-          fire_cooldown: rand(40...90),
-          target_x: rand(900..1400),
+        BlueEnemy.new(
+          position: OZ::Point.new(1900, RoadManager.rand_y_for_obstacle(BlueEnemy::IMAGE.height)),
         ).register(GunManager::SHOOTABLES_GROUP)
 
         @timer = 120
