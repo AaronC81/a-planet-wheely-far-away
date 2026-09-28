@@ -11,6 +11,8 @@ class Enemy < OZ::Entity
 
     @target_x = target_x
     @fly_in_speed = fly_in_speed
+
+    @wobble_timer = 0
   end
 
   def fire
@@ -61,5 +63,8 @@ class Enemy < OZ::Entity
       fire
       @fire_cooldown_remaining = @fire_cooldown
     end
+
+    @wobble_timer += 1
+    self.position.y += Math.sin(@wobble_timer.to_f / 20) / 2
   end
 end
