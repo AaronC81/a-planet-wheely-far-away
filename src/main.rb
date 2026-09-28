@@ -34,16 +34,6 @@ class Window < OZ::Window
     # Intro.new.start
 
     $player = PlayerCar.new.register
-
-    5.times do |i|
-    Enemy.new(
-      position: OZ::Point.new(1000, 500 + i * 50),
-      animations: {
-        normal: OZ::Animation.static(AssetLoader.load_image("enemies/blue_ufo.png")),
-      },
-      fire_cooldown: rand(40...90),
-    ).register(GunManager::SHOOTABLES_GROUP)
-    end
   end
 
   def update

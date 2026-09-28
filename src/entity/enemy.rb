@@ -1,5 +1,5 @@
 class Enemy < OZ::Entity
-  def initialize(fire_cooldown:, **kw)
+  def initialize(fire_cooldown:, target_x:, fly_in_speed: 10, **kw)
     super(**kw)
 
     @hp = 20
@@ -8,6 +8,9 @@ class Enemy < OZ::Entity
 
     @fire_cooldown = fire_cooldown
     @fire_cooldown_remaining = fire_cooldown
+
+    @target_x = target_x
+    @fly_in_speed = fly_in_speed
   end
 
   def fire
@@ -41,6 +44,13 @@ class Enemy < OZ::Entity
   end
 
   def update
+    if self.position.x > @target_x
+      self.rotation = -15
+      self.position.x -= @fly_in_speed
+    else
+      self.rotation = 0
+    end
+
     if @fire_buffer > 0
       @fire_buffer -= 1
     else
