@@ -43,13 +43,12 @@ class GunManager < OZ::Component
 
   def update
     @recent_shots.each do |shot|
-      # TODO: This will need to change velocity based on the direction the "camera" is moving
       shot.origin.x -= $speed
       shot.target.x -= $speed
 
       shot.age += 1
     end
-    @recent_shots.reject! { |shot| shot.age > 10 }
+    @recent_shots.reject! { |shot| shot.age > 2 }
 
     if OZ::Input.click?
       OZ::Input.clear_click
@@ -160,8 +159,7 @@ class GunManager < OZ::Component
     end
 
     @recent_shots.each do |shot|
-      Gosu.draw_line(shot.origin.x, shot.origin.y, Gosu::Color::YELLOW, shot.target.x, shot.target.y, Gosu::Color::YELLOW)
-      Gosu.draw_rect(shot.target.x - 4, shot.target.y - 4, 9, 9, Gosu::Color::YELLOW)
+      Gosu.draw_line(shot.origin.x, shot.origin.y, Gosu::Color::YELLOW, shot.target.x, shot.target.y, Gosu::Color::YELLOW, 100000)
     end
 
     # We're drawing UI so we might as well be responsible for HP as well. Who cares really
