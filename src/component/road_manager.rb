@@ -2,9 +2,9 @@ class RoadManager < OZ::Component
   ROAD_IMAGE = AssetLoader.load_image("road.png", retro: true)
 
   # TODO: Many more!
-  BG_BUILDINGS = 4.times.map { |i| AssetLoader.load_image("buildings/bg_building_#{i+1}.png") } \
-    + 4.times.map { |i| AssetLoader.load_image("buildings/bg_building_spacer.png") }
-  FG_BUILDINGS = 5.times.map { |i| AssetLoader.load_image("buildings/fg_building_#{i+1}.png") }
+  BG_BUILDINGS = 5.times.map { |i| AssetLoader.load_image("buildings/bg_building_#{i+1}.png") } \
+    + 10.times.map { |i| AssetLoader.load_image("buildings/bg_building_spacer.png") }
+  FG_BUILDINGS = 7.times.map { |i| AssetLoader.load_image("buildings/fg_building_#{i+1}.png") }
 
   SPACE_BACKGROUND = AssetLoader.load_image("space_background.png")
 
