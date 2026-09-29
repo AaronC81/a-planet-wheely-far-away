@@ -23,7 +23,7 @@ class SpawnManager < OZ::Component
     @timer -= 1
     if @timer <= 0
       if [true, false].sample
-        image = AssetLoader.load_image('obstacles/wall.png')
+        image = AssetLoader.load_image([true, false].sample ? 'obstacles/wall.png' : 'obstacles/laser_wall.png')
         Obstacle.new(
           image,
           RoadManager.rand_y_for_obstacle(image.height),
