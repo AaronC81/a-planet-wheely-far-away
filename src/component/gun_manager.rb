@@ -37,11 +37,11 @@ class GunManager < OZ::Component
     @is_reloading = false
 
     @cylinder_angle = 0
-
-    SHOOTABLES_GROUP.register
   end
 
   def update
+    SHOOTABLES_GROUP.update
+
     @recent_shots.each do |shot|
       shot.origin.x -= $speed
       shot.target.x -= $speed
@@ -145,6 +145,8 @@ class GunManager < OZ::Component
   end
 
   def draw
+    SHOOTABLES_GROUP.draw
+
     x = 30
     y = 30
     

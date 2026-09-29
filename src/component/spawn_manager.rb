@@ -3,11 +3,11 @@ class SpawnManager < OZ::Component
 
   def initialize
     @timer = 60
-
-    OBSTACLES_GROUP.register
   end
 
   def update
+    OBSTACLES_GROUP.update
+
     OBSTACLES_GROUP.items.reject! do |obstacle|
       if $player.bounding_box.overlaps?(obstacle.bounding_box)
         $player.hit
@@ -39,5 +39,9 @@ class SpawnManager < OZ::Component
         @timer = 120
       end
     end
+  end
+
+  def draw
+    OBSTACLES_GROUP.draw
   end
 end

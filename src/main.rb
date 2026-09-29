@@ -22,31 +22,54 @@ require_relative 'component/gun_manager'
 require_relative 'component/spawn_manager'
 require_relative 'component/vfx_manager'
 require_relative 'component/intro'
+require_relative 'component/main_menu'
+
+require_relative 'ext/orange_zest'
+
+require_relative 'game'
+Game.reset
 
 class Window < OZ::Window
   def initialize
     super(WIDTH, HEIGHT)
 
-    $speed = 8
+    @main_menu = MainMenu.new do
+      Game.reset
+      @state = :game
+    end
 
-    RoadManager.new.register
-    GunManager.new.register
-    SpawnManager.new.register
+    @state = :intro
+    @intro = Intro.new
 
     # TODO: wire this up in some sensible way
-    # Intro.new.start
-
-    $player = PlayerCar.new.register
+    @intro.start do
+      @state = :main_menu
+    end
   end
 
   def update
     VfxManager.update
+    active_component.update
+
     super
   end
 
   def draw
     VfxManager.draw
+    active_component.draw
+
     super
+  end
+
+  def active_component
+    case @state
+    when :intro
+      @intro
+    when :main_menu
+      @main_menu
+    when :game
+      Game
+    end
   end
 end
 

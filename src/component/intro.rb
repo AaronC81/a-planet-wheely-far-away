@@ -32,6 +32,8 @@ class Intro < OZ::Component
     end
   end
 
+  FONT = AssetLoader.load_system_font("Arial", 16)
+
   # Preload
   AssetLoader.load_sample("sample/intro/glint.wav")
   AssetLoader.load_sample("sample/intro/hmm.wav")
@@ -44,8 +46,15 @@ class Intro < OZ::Component
   def initialize
     INTRO_GROUP.register
   end
+
+  def draw
+    super
+    FONT.draw_text("[Escape] Skip intro", 20, Window::HEIGHT - 50, 10000, 1.0, 1.0, Gosu::Color::WHITE)
+  end
   
-  def start
+  def start(&block)
+    @completion_callback = block
+
     # TODO need a way to cancel
     OZ::Scheduler.start do
       AssetLoader.play_sample("sample/intro/wind_ambiance.wav")
@@ -103,13 +112,26 @@ class Intro < OZ::Component
 
       AssetLoader.play_sample("sample/intro/ufo_abduct.wav")
       show_image "intro/9.png", :centre, :centre, 300
+
+      block.() if block
     end
   end
 
   def cancel
     # TODO: Untested
     # There are no other scheduled tasks during the intro, so...
+    INTRO_GROUP.items.clear
     OZ::Scheduler.clear
+
+    @completion_callback.()
+  end
+
+  def update
+    super
+
+    if Gosu.button_down?(Gosu::KB_ESCAPE)
+      cancel
+    end
   end
 
   def show_image(path, x, y, duration=nil)
