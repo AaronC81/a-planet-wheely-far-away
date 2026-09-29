@@ -147,6 +147,17 @@ class GunManager < OZ::Component
   def draw
     x = 30
     y = 30
+    
+    # We're drawing UI so we might as well be responsible for HP as well. Who cares really
+    clamped_hp = $player.hp
+    clamped_hp = 5 if clamped_hp > 5
+    clamped_hp = 0 if clamped_hp < 0
+      
+    image = AssetLoader.load_image("ui/hp_#{clamped_hp}.png")
+    image.draw(x, y)
+
+    x = 180
+    y += 10
 
     Gosu.rotate(@cylinder_angle, x + CYLINDER_SPRITE.width / 2, y + CYLINDER_SPRITE.height / 2) do
       CYLINDER_SPRITE.draw(x, y, 100000)
@@ -160,13 +171,6 @@ class GunManager < OZ::Component
 
     @recent_shots.each do |shot|
       Gosu.draw_line(shot.origin.x, shot.origin.y, Gosu::Color::YELLOW, shot.target.x, shot.target.y, Gosu::Color::YELLOW, 100000)
-    end
-
-    # We're drawing UI so we might as well be responsible for HP as well. Who cares really
-    lost_hp = PlayerCar::MAX_HP - $player.hp
-    PlayerCar::MAX_HP.times do |i|
-      sprite = lost_hp > i ? HEART_EMPTY_SPRITE : HEART_FULL_SPRITE
-      sprite.draw(Window::WIDTH - 30 - 100 * (i + 1), y, 100000)
     end
   end
 end
