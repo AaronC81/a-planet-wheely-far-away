@@ -55,7 +55,7 @@ class Enemy < OZ::Entity
     end
 
     if @fire_cooldown_remaining <= 0
-      fire
+      fire unless $player.dead?
       @fire_cooldown_remaining = @fire_cooldown
     end
 

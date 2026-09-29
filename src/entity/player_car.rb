@@ -18,11 +18,14 @@ class PlayerCar < OZ::Entity
 
     @hp = 5
     @invulnerability_timer = 0
+    @gone = false
   end
 
   attr_reader :hp
 
   def update
+    return if @hp == 0
+
     if @invulnerability_timer > 0
       @invulnerability_timer -= 1
 
@@ -58,20 +61,65 @@ class PlayerCar < OZ::Entity
     end
   end
 
+  def draw
+    super unless @gone
+  end
+
+  def dead?
+    @hp == 0
+  end
+
   def hit
     if @invulnerability_timer <= 0
       # TODO: death logic
       # TODO: animation or something
       @hp -= 1
+      @hp = 0 if @hp < 0
 
-      5.times do
-        VfxManager.add_effect(
-          image: AssetLoader.load_image("particles/hit_sparks.png"),
-          x: bounding_box.origin.x + rand(0..bounding_box.width),
-          y: bounding_box.origin.y + rand(0..bounding_box.height),
-          rotation: rand(0...360),
-          duration: 0.75,
-        )
+      # Just died
+      if dead?
+        $speed = 0
+        OZ::Scheduler.start do
+          8.times do
+            OZ::Scheduler.wait 10
+            VfxManager.add_effect(
+              image: AssetLoader.load_image("particles/smoke.png"),
+              x: bounding_box.origin.x + rand(0..bounding_box.width),
+              y: bounding_box.origin.y + rand(0..bounding_box.height),
+              rotation: rand(0...360),
+              duration: 0.3
+            )
+            AssetLoader.play_sample("sample/poof.wav")
+          end
+
+          OZ::Scheduler.wait 20
+
+          @gone = true
+          4.times do
+            VfxManager.add_effect(
+              image: AssetLoader.load_image("particles/smoke.png"),
+              x: bounding_box.origin.x + rand(0..bounding_box.width),
+              y: bounding_box.origin.y + rand(0..bounding_box.height),
+              rotation: rand(0...360),
+              duration: 1
+            )
+          end
+          AssetLoader.play_sample("sample/poof.wav")
+
+          OZ::Scheduler.wait 20
+
+          # TODO: go to a game-over screen
+        end
+      else
+        5.times do
+          VfxManager.add_effect(
+            image: AssetLoader.load_image("particles/hit_sparks.png"),
+            x: bounding_box.origin.x + rand(0..bounding_box.width),
+            y: bounding_box.origin.y + rand(0..bounding_box.height),
+            rotation: rand(0...360),
+            duration: 0.75,
+          )
+        end
       end
 
       AssetLoader.play_sample("sample/car_hit.wav")

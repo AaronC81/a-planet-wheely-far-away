@@ -22,7 +22,7 @@ class RedEnemy < Enemy
   def update
     super
 
-    if @fire_cooldown_remaining == REPEAT_COOLDOWN + 12
+    if @fire_cooldown_remaining == REPEAT_COOLDOWN + 12 && !$player.dead?
       AssetLoader.play_sample("sample/laser_charge.wav")
     end
   end
