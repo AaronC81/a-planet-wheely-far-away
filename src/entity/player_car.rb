@@ -2,6 +2,8 @@ class PlayerCar < OZ::Entity
   MAX_HP = 5
 
   IMAGE = AssetLoader.load_image("player_car.png")
+  IMAGE_DAMAGED = AssetLoader.load_image("player_car_damaged.png")
+  IMAGE_CRITICAL = AssetLoader.load_image("player_car_critical.png")
 
   VERTICAL_CENTRE = (Window::HEIGHT - IMAGE.height) / 2
 
@@ -11,7 +13,9 @@ class PlayerCar < OZ::Entity
     super(
       position: OZ::Point.new(50, VERTICAL_CENTRE),
       animations: {
-        normal: OZ::Animation.static(IMAGE)
+        normal: OZ::Animation.static(IMAGE),
+        damaged: OZ::Animation.static(IMAGE_DAMAGED),
+        critical: OZ::Animation.static(IMAGE_CRITICAL),
       },
       **kw
     )
@@ -25,6 +29,14 @@ class PlayerCar < OZ::Entity
 
   def update
     return if @hp == 0
+
+    if @hp == 1
+      self.animation = :critical
+    elsif @hp <= 3
+      self.animation = :damaged
+    else
+      self.animation = :normal
+    end
 
     if @invulnerability_timer > 0
       @invulnerability_timer -= 1
