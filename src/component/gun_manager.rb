@@ -174,5 +174,11 @@ class GunManager < OZ::Component
     @recent_shots.each do |shot|
       Gosu.draw_line(shot.origin.x, shot.origin.y, Gosu::Color::YELLOW, shot.target.x, shot.target.y, Gosu::Color::YELLOW, 100000)
     end
+
+    # And speed! Why not...
+    # TODO: better, maybe 7-seg lookin', right-align?, and put on easy-to-read background
+    font = AssetLoader.load_system_font("Arial", 56)
+    mph = (($speed + 0.1) * 4).floor
+    font.draw_text("#{mph}mph", Window::WIDTH - 200, 50, 10000, 1.0, 1.0, Gosu::Color::WHITE)
   end
 end
