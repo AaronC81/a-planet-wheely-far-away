@@ -6,10 +6,10 @@ class OrangeEnemy < Enemy
       animations: {
         normal: OZ::Animation.static(IMAGE),
       },
-      fire_cooldown: rand(250...300),
-      fire_buffer: rand(100...200),
+      fire_cooldown: rand(100...150),
+      fire_buffer: rand(50...100),
       target_x: rand(1200..1400),
-      hp: 40,
+      hp: 25,
       **kw
     )
   end
@@ -17,8 +17,8 @@ class OrangeEnemy < Enemy
   def fire
     AssetLoader.play_sample("sample/laser_shotgun.wav")
 
-    5.times do
-      angle = rand(240..300)
+    10.times do
+      angle = rand(220..320)
       velocity = rand(0.5..1.5)
       x_velocity = Gosu.offset_x(angle, velocity)
       y_velocity = Gosu.offset_y(angle, velocity)

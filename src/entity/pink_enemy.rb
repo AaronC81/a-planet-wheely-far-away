@@ -6,10 +6,10 @@ class PinkEnemy < Enemy
       animations: {
         normal: OZ::Animation.static(IMAGE),
       },
-      fire_cooldown: rand(120...180),
+      fire_cooldown: rand(50...70),
       fire_buffer: rand(40...60),
       target_x: rand(1200..1400),
-      hp: 20,
+      hp: 15,
       **kw
     )
   end

@@ -68,7 +68,7 @@ class GunManager < OZ::Component
       OZ::Input.clear_click
 
       if @rapid_fire_remaining_ammo > 0
-        @rapid_fire_cooldown = 6
+        @rapid_fire_cooldown = 7
       end
 
       if @ammo > 0
@@ -115,14 +115,14 @@ class GunManager < OZ::Component
         AssetLoader.play_sample("sample/revolver_reload_start.wav")
 
         # Fixed delay - discourages reloading after every shot, like flipping the cylinder
-        15.times do
-          @cylinder_angle += 2
+        7.times do
+          @cylinder_angle += 4
           OZ::Scheduler.wait 1
         end
         next unless @is_reloading && reload_id == @reload_id
 
         while @ammo < MAX_AMMO
-          OZ::Scheduler.wait 12
+          OZ::Scheduler.wait 8
           next unless @is_reloading && reload_id == @reload_id
 
           AssetLoader.play_sample("sample/revolver_reload_each.wav")

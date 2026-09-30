@@ -9,7 +9,7 @@ class RedEnemy < Enemy
       fire_cooldown: rand(30...50),
       fire_buffer: rand(100...150),
       target_x: rand(900..1400),
-      hp: 15,
+      hp: 20,
       **kw
     )
 
@@ -17,7 +17,7 @@ class RedEnemy < Enemy
     @repeats_this_volley = 0
   end
 
-  REPEAT_COOLDOWN = 8
+  REPEAT_COOLDOWN = 6
 
   def update
     super
@@ -38,7 +38,7 @@ class RedEnemy < Enemy
       velocity: OZ::Point.new(-7, 0),
     ).register(SpawnManager::OBSTACLES_GROUP)
 
-    if @repeats_this_volley < 3
+    if @repeats_this_volley < 5
       @fire_cooldown = REPEAT_COOLDOWN
       @repeats_this_volley += 1
     else

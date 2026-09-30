@@ -3,9 +3,9 @@ class SpawnManager < OZ::Component
 
   def initialize
     @obstacle_timer = 60
-    @enemy_timer = 900 # Bit of delay before enemy spawns
+    @enemy_timer = 450 # Bit of delay before enemy spawns
 
-    @pickup_timer = rand((60*90)..(60*120))
+    @pickup_timer = 60*60
 
     @survival_time = 0
   end
@@ -15,7 +15,7 @@ class SpawnManager < OZ::Component
 
     # Speed up over time
     $speed = 6 + ((@survival_time.to_f / 60) / 30)
-    $speed_mph = 3 + ($speed * 4.5).round
+    $speed_mph = 2 + ($speed * 5.5).round
 
     OBSTACLES_GROUP.update
 
@@ -42,8 +42,9 @@ class SpawnManager < OZ::Component
         RoadManager.rand_y_for_obstacle(image.height),
       ).register(OBSTACLES_GROUP)
 
-      # Only changes a little bit - speed makes this inherently harder
-      if @survival_time > 120*60
+      if $speed_mph > 75
+        @obstacle_timer = rand(30..60)
+      elsif $speed_mph > 55
         @obstacle_timer = rand(40..70)
       else
         @obstacle_timer = rand(50..80)
@@ -57,37 +58,43 @@ class SpawnManager < OZ::Component
         position: OZ::Point.new(1900, RoadManager.rand_y_for_obstacle(klass::IMAGE.height)),
       ).register(GunManager::SHOOTABLES_GROUP)
 
-      if @survival_time > 220*60
-        @enemy_timer = rand(90..160)
-      elsif @survival_time > 140*60
-        @enemy_timer = rand(100..180)
+      if $speed_mph > 50
+        @enemy_timer = rand(90..180)
       else
-        @enemy_timer = rand(120..200)
+        @enemy_timer = rand(100..200)
+      end
+
+      # Combo spawn!
+      if rand > 0.8
+        @enemy_timer = rand(5..15)
       end
     end
 
-    # TODO: balance depending on how long a run takes
     @pickup_timer -= 1
     if @pickup_timer <= 0
       klass = [RapidPickup, HealPickup].sample
       klass.new.register(OBSTACLES_GROUP)
 
-      @pickup_timer = rand((60*60)..(60*90))
+      @pickup_timer = rand((60*55)..(60*75))
     end
   end
 
   def current_enemy_pool
-    if @survival_time < 60*60
+    if $speed_mph < 40
       [BlueEnemy]
-    elsif @survival_time < 120*60
+    elsif $speed_mph < 45
       [BlueEnemy, GreenEnemy]
-    else
+    elsif $speed_mph < 50
       [BlueEnemy, GreenEnemy, RedEnemy]
+    elsif $speed_mph < 60
+      [BlueEnemy, GreenEnemy, RedEnemy, PinkEnemy]
+    else
+      [BlueEnemy, GreenEnemy, RedEnemy, PinkEnemy, OrangeEnemy]
     end
   end
 
   def current_obstacle_pool
-    if @survival_time < 30*60
+    if $speed_mph < 45
       ['obstacles/wall.png']
     else
       ['obstacles/wall.png', 'obstacles/laser_wall.png']
