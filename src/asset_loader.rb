@@ -21,6 +21,16 @@ module AssetLoader
     end
   end
 
+  def self.load_font(path, size)
+    full_path = File.join(__dir__, '..', 'res', *path)
+    key = [full_path, size]
+    if @@fonts.has_key?(key)
+      @@fonts[key]
+    else
+      @@fonts[key] = Gosu::Font.new(size, name: full_path)
+    end
+  end
+
   def self.load_sample(*path)
     full_path = File.join(__dir__, '..', 'res', *path)
     if @@samples.has_key?(full_path)

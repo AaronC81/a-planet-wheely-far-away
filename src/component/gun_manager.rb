@@ -15,6 +15,8 @@ class GunManager < OZ::Component
   HEART_FULL_SPRITE = AssetLoader.load_image("ui/heart_full.png")
   HEART_EMPTY_SPRITE = AssetLoader.load_image("ui/heart_empty.png")
 
+  SPEEDOMETER_SPRITE = AssetLoader.load_image("ui/speedometer.png", retro: true)
+
   EXPORT_SCALE = 0.35
   # All centres
   ROUND_POSITIONS = [
@@ -195,7 +197,6 @@ class GunManager < OZ::Component
     if @rapid_fire_remaining_ammo > 0
       DRUM_SPRITE.draw(x, y, 100000)
 
-      # TODO: centre
       DRUM_AMMO_FONT.draw_text_rel(@rapid_fire_remaining_ammo.to_s, x + DRUM_SPRITE.width / 2, y + DRUM_SPRITE.height / 2, 100001, 0.5, 0.5, 1, 1, Gosu::Color::WHITE)
     else
       Gosu.rotate(@cylinder_angle, x + CYLINDER_SPRITE.width / 2, y + CYLINDER_SPRITE.height / 2) do
@@ -214,8 +215,8 @@ class GunManager < OZ::Component
     end
 
     # And speed! Why not...
-    # TODO: better, maybe 7-seg lookin', right-align?, and put on easy-to-read background
-    font = AssetLoader.load_system_font("Arial", 56)
-    font.draw_text("#{$speed_mph}mph", Window::WIDTH - 200, 50, 10000, 1.0, 1.0, Gosu::Color::WHITE)
+    SPEEDOMETER_SPRITE.draw(Window::WIDTH - SPEEDOMETER_SPRITE.width - 50, 50, 10000)
+    font = AssetLoader.load_font("font/DSEG7ClassicMini-Regular.ttf", 55)
+    font.draw_text_rel($speed_mph.to_s, Window::WIDTH - SPEEDOMETER_SPRITE.width + 55, 70, 10001, 1.0, 0, 1.0, 1.0, Gosu::Color.argb(255, 255, 167, 74))
   end
 end
