@@ -216,7 +216,6 @@ class GunManager < OZ::Component
     # And speed! Why not...
     # TODO: better, maybe 7-seg lookin', right-align?, and put on easy-to-read background
     font = AssetLoader.load_system_font("Arial", 56)
-    mph = (($speed + 0.1) * 4).floor
-    font.draw_text("#{mph}mph", Window::WIDTH - 200, 50, 10000, 1.0, 1.0, Gosu::Color::WHITE)
+    font.draw_text("#{$speed_mph}mph", Window::WIDTH - 200, 50, 10000, 1.0, 1.0, Gosu::Color::WHITE)
   end
 end

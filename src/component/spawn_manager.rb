@@ -15,6 +15,7 @@ class SpawnManager < OZ::Component
 
     # Speed up over time
     $speed = 6 + ((@survival_time.to_f / 60) / 30)
+    $speed_mph = 3 + ($speed * 4.5).round
 
     OBSTACLES_GROUP.update
 
