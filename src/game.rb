@@ -10,7 +10,7 @@ module Game
   end
   
   def self.components
-    [@road, $gun, @spawn, $player]
+    [@road, @spawn, $gun, $player]
   end
 
   def self.update
