@@ -16,6 +16,7 @@ class GunManager < OZ::Component
   HEART_EMPTY_SPRITE = AssetLoader.load_image("ui/heart_empty.png")
 
   SPEEDOMETER_SPRITE = AssetLoader.load_image("ui/speedometer.png", retro: true)
+  MOTHERSHIP_HP_SPRITE = AssetLoader.load_image("ui/mothership_hp.png", retro: true)
 
   EXPORT_SCALE = 0.35
   # All centres
@@ -218,5 +219,16 @@ class GunManager < OZ::Component
     SPEEDOMETER_SPRITE.draw(Window::WIDTH - SPEEDOMETER_SPRITE.width - 50, 50, 10000)
     font = AssetLoader.load_font("font/DSEG7ClassicMini-Regular.ttf", 55)
     font.draw_text_rel($speed_mph.to_s, Window::WIDTH - SPEEDOMETER_SPRITE.width + 55, 70, 10001, 1.0, 0, 1.0, 1.0, Gosu::Color.argb(255, 255, 167, 74))
+
+    # Screw it, mothership HP while we're at it, I guess ;)
+    if $mothership
+      MOTHERSHIP_HP_SPRITE.draw((Window::WIDTH - MOTHERSHIP_HP_SPRITE.width) / 2, 50, 10000)
+      
+      hp_bar_width = MOTHERSHIP_HP_SPRITE.width - 30
+      Gosu.draw_rect((Window::WIDTH - hp_bar_width) / 2, 90, hp_bar_width, 40, Gosu::Color::WHITE, 10000)
+
+      hp_ratio = $mothership.hp / $mothership.max_hp.to_f
+      Gosu.draw_rect((Window::WIDTH - hp_bar_width) / 2, 90, hp_bar_width * hp_ratio, 40, Gosu::Color::RED, 10000)
+    end
   end
 end

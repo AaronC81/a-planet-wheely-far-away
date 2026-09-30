@@ -2,6 +2,7 @@ class Enemy < OZ::Entity
   def initialize(hp:, fire_buffer:, fire_cooldown:, target_x:, fly_in_speed: 10, **kw)
     super(**kw)
 
+    @max_hp = hp
     @hp = hp
 
     @fire_buffer = fire_buffer
@@ -13,7 +14,13 @@ class Enemy < OZ::Entity
     @fly_in_speed = fly_in_speed
 
     @wobble_timer = 0
+
+    @tilt_while_entering = true
+    @wobble_time_divider = 20
+    @wobble_amount_divider = 2
   end
+
+  attr_reader :hp, :max_hp
 
   def fire
     raise 'abstract'
@@ -41,8 +48,8 @@ class Enemy < OZ::Entity
   end
 
   def update
-    if self.position.x > @target_x
-      self.rotation = -15
+    if self.position.x > @target_x &&
+      self.rotation = -15 if @tilt_while_entering
       self.position.x -= @fly_in_speed
     else
       self.rotation = 0
@@ -60,6 +67,6 @@ class Enemy < OZ::Entity
     end
 
     @wobble_timer += 1
-    self.position.y += Math.sin(@wobble_timer.to_f / 20) / 2
+    self.position.y += Math.sin(@wobble_timer.to_f / @wobble_time_divider) / @wobble_amount_divider
   end
 end
