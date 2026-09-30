@@ -25,7 +25,7 @@ class PlayerCar < OZ::Entity
     @gone = false
   end
 
-  attr_reader :hp
+  attr_accessor :hp
 
   def update
     return if @hp == 0

@@ -9,6 +9,9 @@ class GunManager < OZ::Component
   ROUND_LIVE_SPRITE = AssetLoader.load_image("ui/round_live.png")
   ROUND_SPENT_SPRITE = AssetLoader.load_image("ui/round_spent.png")
 
+  DRUM_SPRITE = AssetLoader.load_image("ui/drum_mag.png")
+  DRUM_AMMO_FONT = AssetLoader.load_system_font("Arial", 56)
+
   HEART_FULL_SPRITE = AssetLoader.load_image("ui/heart_full.png")
   HEART_EMPTY_SPRITE = AssetLoader.load_image("ui/heart_empty.png")
 
@@ -37,7 +40,12 @@ class GunManager < OZ::Component
     @is_reloading = false
 
     @cylinder_angle = 0
+
+    @rapid_fire_remaining_ammo = 0
+    @rapid_fire_cooldown = 0
   end
+
+  attr_accessor :rapid_fire_remaining_ammo
 
   def update
     SHOOTABLES_GROUP.update
@@ -50,26 +58,49 @@ class GunManager < OZ::Component
     end
     @recent_shots.reject! { |shot| shot.age > 2 }
 
-    if OZ::Input.click?
+    if @rapid_fire_cooldown > 0
+      @rapid_fire_cooldown -= 1
+    end
+
+    if OZ::Input.click? || (@rapid_fire_remaining_ammo > 0 && Gosu.button_down?(Gosu::MS_LEFT) && @rapid_fire_cooldown == 0)
       OZ::Input.clear_click
+
+      if @rapid_fire_remaining_ammo > 0
+        @rapid_fire_cooldown = 6
+      end
 
       if @ammo > 0
         # Cancel reload
         @is_reloading = false
         @cylinder_angle = 0
 
-        @ammo -= 1
+        if @rapid_fire_remaining_ammo > 0
+          AssetLoader.play_sample("sample/rapid_shot.wav")
+        else
+          AssetLoader.play_sample("sample/revolver_shot.wav")
+        end
+
+        if @rapid_fire_remaining_ammo > 0
+          @rapid_fire_remaining_ammo -= 1
+
+          if @rapid_fire_remaining_ammo == 0
+            AssetLoader.play_sample("sample/rapid_end.wav")
+
+            # Free reload when leaving rapid
+            @ammo = 6
+          end
+        else
+          @ammo -= 1
+        end
 
         check_hit(OZ::Input.cursor)
         @recent_shots << RecentShot.new($player.bounding_box.center, OZ::Input.cursor, 0)
-
-        AssetLoader.play_sample("sample/revolver_shot.wav")
       else
         AssetLoader.play_sample("sample/revolver_empty.wav")
       end
     end
 
-    if Gosu.button_down?(Gosu::KB_R) && !@is_reloading && @ammo < MAX_AMMO
+    if Gosu.button_down?(Gosu::KB_R) && !@is_reloading && @ammo < MAX_AMMO && @rapid_fire_remaining_ammo == 0
       @is_reloading = true
 
       # Fixes exploit where you could hold R while firing to fast-reload.
@@ -161,13 +192,20 @@ class GunManager < OZ::Component
     x = 180
     y += 10
 
-    Gosu.rotate(@cylinder_angle, x + CYLINDER_SPRITE.width / 2, y + CYLINDER_SPRITE.height / 2) do
-      CYLINDER_SPRITE.draw(x, y, 100000)
-      ROUND_POSITIONS.each.with_index do |pos, i|
-        spent_ammo = MAX_AMMO - @ammo
+    if @rapid_fire_remaining_ammo > 0
+      DRUM_SPRITE.draw(x, y, 100000)
 
-        sprite = i >= spent_ammo ? ROUND_LIVE_SPRITE : ROUND_SPENT_SPRITE
-        sprite.draw(x + pos.x, y + pos.y, 100000)
+      # TODO: centre
+      DRUM_AMMO_FONT.draw_text_rel(@rapid_fire_remaining_ammo.to_s, x + DRUM_SPRITE.width / 2, y + DRUM_SPRITE.height / 2, 100001, 0.5, 0.5, 1, 1, Gosu::Color::WHITE)
+    else
+      Gosu.rotate(@cylinder_angle, x + CYLINDER_SPRITE.width / 2, y + CYLINDER_SPRITE.height / 2) do
+        CYLINDER_SPRITE.draw(x, y, 100000)
+        ROUND_POSITIONS.each.with_index do |pos, i|
+          spent_ammo = MAX_AMMO - @ammo
+
+          sprite = i >= spent_ammo ? ROUND_LIVE_SPRITE : ROUND_SPENT_SPRITE
+          sprite.draw(x + pos.x, y + pos.y, 100000)
+        end
       end
     end
 

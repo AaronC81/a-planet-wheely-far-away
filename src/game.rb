@@ -3,14 +3,14 @@ module Game
     $speed = 8
 
     @road = RoadManager.new
-    @gun = GunManager.new
+    $gun = GunManager.new
     @spawn = SpawnManager.new
 
     $player = PlayerCar.new
   end
   
   def self.components
-    [@road, @gun, @spawn, $player]
+    [@road, $gun, @spawn, $player]
   end
 
   def self.update

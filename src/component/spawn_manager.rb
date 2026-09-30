@@ -17,7 +17,11 @@ class SpawnManager < OZ::Component
 
     OBSTACLES_GROUP.items.reject! do |obstacle|
       if $player.bounding_box.overlaps?(obstacle.bounding_box)
-        $player.hit
+        if obstacle.is_a?(Pickup)
+          obstacle.on_pickup
+        else
+          $player.hit
+        end
         true
       elsif obstacle.position.x + obstacle.image.width < 0
         true
@@ -45,6 +49,10 @@ class SpawnManager < OZ::Component
 
         @timer = 120
       end
+
+      # TODO: obviously decrease
+      RapidPickup.new.register(OBSTACLES_GROUP)
+      HealPickup.new.register(OBSTACLES_GROUP)
     end
   end
 
