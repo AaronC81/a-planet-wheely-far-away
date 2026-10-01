@@ -1,5 +1,6 @@
 class RoadManager < OZ::Component
   ROAD_IMAGE = AssetLoader.load_image("road.png", retro: true)
+  DESERT_ROAD_IMAGE = AssetLoader.load_image("desert_road.png", retro: true)
 
   # TODO: Many more!
   BG_BUILDINGS = 5.times.map { |i| AssetLoader.load_image("buildings/bg_building_#{i+1}.png") } \
@@ -26,6 +27,10 @@ class RoadManager < OZ::Component
 
     @fg_sprites = [FG_BUILDINGS.sample]
     @bg_sprites = [BG_BUILDINGS.sample]
+
+    @desert_transition = false
+    @desert_transition_timer = 0
+    @in_desert = false
   end
 
   def update
@@ -44,12 +49,29 @@ class RoadManager < OZ::Component
       @bg_offset += @bg_sprites[0].width
       @bg_sprites.shift
     end
+
+    if @desert_transition
+      @desert_transition_timer -= 1
+
+      if @desert_transition_timer <= 90
+        @in_desert = true
+
+        @fg_sprites.clear
+        @bg_sprites.clear
+
+        $portal.unregister
+      end
+    end
   end
 
   def draw
     # TODO: Small gaps between buildings unexpectedly... maybe make them overlap?
 
-    SPACE_BACKGROUND.draw(0, 0)
+    if @in_desert
+      Gosu.draw_rect(0, 0, Window::WIDTH, Window::HEIGHT, Gosu::Color.rgb(100, 175, 200))
+    else
+      SPACE_BACKGROUND.draw(0, 0)
+    end
 
     # Background
     i = 0
@@ -57,7 +79,7 @@ class RoadManager < OZ::Component
     while x < Window::WIDTH
       # If we've run out of buildings, generate a new one
       unless @bg_sprites[i]
-        @bg_sprites << BG_BUILDINGS.sample
+        @bg_sprites << bg_buildings.sample
       end
 
       @bg_sprites[i].draw(x, BUILDINGS_START - @bg_sprites[i].height)
@@ -71,7 +93,7 @@ class RoadManager < OZ::Component
     while x < Window::WIDTH
       # If we've run out of buildings, generate a new one
       unless @fg_sprites[i]
-        @fg_sprites << FG_BUILDINGS.sample
+        @fg_sprites << fg_buildings.sample
       end
 
       @fg_sprites[i].draw(x, BUILDINGS_START - @fg_sprites[i].height)
@@ -79,10 +101,47 @@ class RoadManager < OZ::Component
       i += 1
     end
 
-    x = @road_offset - ROAD_IMAGE.width
+    if @in_desert
+      road_image = DESERT_ROAD_IMAGE
+    else
+      road_image = ROAD_IMAGE
+    end
+    x = @road_offset - road_image.width
     while x < Window::WIDTH
-      ROAD_IMAGE.draw(x, BUILDINGS_START - 20)
-      x += ROAD_IMAGE.width - 20
+      road_image.draw(x, BUILDINGS_START - 20)
+      x += road_image.width - 20
+    end
+
+    if @desert_transition && @desert_transition_timer > 0
+      if @desert_transition_timer > 90
+        opacity = 255 * ((120 - @desert_transition_timer).to_f / 30)
+      else
+        opacity = 255 * (@desert_transition_timer.to_f / 90)
+      end
+      Gosu.draw_rect(0, 0, Window::WIDTH, Window::HEIGHT, Gosu::Color.argb(opacity, 0, 255, 0), 1000000)
+    end
+  end
+
+  def start_desert_transition
+    return if @desert_transition
+
+    @desert_transition = true
+    @desert_transition_timer = 120
+  end
+
+  def bg_buildings
+    if @in_desert
+      [AssetLoader.load_image("buildings/bg_desert.png", retro: true)]
+    else
+      BG_BUILDINGS
+    end
+  end
+
+  def fg_buildings
+    if @in_desert
+      [AssetLoader.load_image("buildings/fg_desert.png", retro: true)]
+    else
+      FG_BUILDINGS
     end
   end
 end

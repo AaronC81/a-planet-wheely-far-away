@@ -22,6 +22,7 @@ require_relative 'entity/mothership_enemy'
 require_relative 'entity/pickup'
 require_relative 'entity/rapid_pickup'
 require_relative 'entity/heal_pickup'
+require_relative 'entity/portal'
 
 require_relative 'component/road_manager'
 require_relative 'component/gun_manager'

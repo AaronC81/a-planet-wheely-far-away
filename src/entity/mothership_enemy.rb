@@ -60,6 +60,8 @@ class MothershipEnemy < Enemy
             duration: 1
           )
         end
+
+        $portal = Portal.new.register
       elsif @dying_timer > 15 && @dying_timer % 7 == 0
         VfxManager.add_effect(
           image: AssetLoader.load_image("particles/smoke.png"),
