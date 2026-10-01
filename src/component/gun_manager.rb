@@ -220,7 +220,7 @@ class GunManager < OZ::Component
     font.draw_text_rel($speed_mph.to_s, Window::WIDTH - SPEEDOMETER_SPRITE.width + 55, 70, 10001, 1.0, 0, 1.0, 1.0, Gosu::Color.argb(255, 255, 167, 74))
 
     # Screw it, mothership HP while we're at it, I guess ;)
-    if $mothership
+    if $mothership && $mothership.hp > 0
       MOTHERSHIP_HP_SPRITE.draw((Window::WIDTH - MOTHERSHIP_HP_SPRITE.width) / 2, 50, 10000)
       
       hp_bar_width = MOTHERSHIP_HP_SPRITE.width - 30
