@@ -12,6 +12,8 @@ class SpawnManager < OZ::Component
     @has_spawned_mothership = false
   end
 
+  attr_accessor :obstacle_timer
+
   def update
     @survival_time += 1
 

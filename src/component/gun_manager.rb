@@ -52,6 +52,7 @@ class GunManager < OZ::Component
 
   def update
     SHOOTABLES_GROUP.update
+    SHOOTABLES_GROUP.items.reject!(&:dead?)
 
     @recent_shots.each do |shot|
       shot.origin.x -= $speed
@@ -174,8 +175,6 @@ class GunManager < OZ::Component
         AssetLoader.play_sample("sample/revolver_hit_#{rand(1..4)}.wav")
       end
     end
-
-    SHOOTABLES_GROUP.items.reject!(&:dead?)
   end
 
   def draw
