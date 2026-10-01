@@ -3,7 +3,7 @@ class Portal < OZ::Entity
 
   def initialize
     super(
-      position: OZ::Point.new(1900, RoadManager::BUILDINGS_START),
+      position: OZ::Point.new(2600, RoadManager::BUILDINGS_START),
       animations: {
         normal: OZ::Animation.static(IMAGE),
       },
