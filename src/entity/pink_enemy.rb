@@ -12,6 +12,22 @@ class PinkEnemy < Enemy
       hp: 15,
       **kw
     )
+
+    @target_y = RoadManager.rand_y_for_obstacle(IMAGE.height)
+  end
+
+  def update
+    super
+
+    distance = (position.y - @target_y).abs
+
+    if distance < 20
+      @target_y = RoadManager.rand_y_for_obstacle(IMAGE.height)
+    elsif position.y > @target_y
+      position.y -= 1
+    elsif position.y < @target_y
+      position.y += 1
+    end
   end
 
   def fire
