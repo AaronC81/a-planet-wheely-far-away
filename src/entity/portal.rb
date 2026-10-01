@@ -16,6 +16,7 @@ class Portal < OZ::Entity
     self.position.x -= $speed
 
     if bounding_box.overlaps?($player.bounding_box)
+      AssetLoader.play_sample("sample/teleport.wav")
       $road.start_desert_transition
     end
   end
