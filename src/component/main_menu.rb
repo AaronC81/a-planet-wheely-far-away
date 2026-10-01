@@ -15,9 +15,11 @@ class MainMenu < OZ::Component
     if !@starting && OZ::Input.click?
       OZ::Input.clear_click
 
-      # TODO: fade out
       @starting = true
-      @start_callback.()
+      $fade.fade do
+        @start_callback.()
+        @starting = false
+      end
     end
   end
 end

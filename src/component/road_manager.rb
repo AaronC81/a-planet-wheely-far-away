@@ -61,6 +61,16 @@ class RoadManager < OZ::Component
 
         $portal.unregister
       end
+
+      if @desert_transition_timer <= 0
+        @desert_transition = false
+
+        $banner.show_banner(AssetLoader.load_image("text/win.png")) do
+          $fade.fade do
+            $state = :main_menu
+          end
+        end
+      end
     end
   end
 

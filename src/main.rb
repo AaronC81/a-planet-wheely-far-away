@@ -29,6 +29,7 @@ require_relative 'component/gun_manager'
 require_relative 'component/spawn_manager'
 require_relative 'component/vfx_manager'
 require_relative 'component/banner_manager'
+require_relative 'component/fade_manager'
 require_relative 'component/intro'
 require_relative 'component/main_menu'
 
@@ -43,21 +44,24 @@ class Window < OZ::Window
 
     @main_menu = MainMenu.new do
       Game.reset
-      @state = :game
+      $state = :game
     end
 
-    @state = :intro
+    $fade = FadeManager.new
+
+    $state = :intro
     @intro = Intro.new
 
     # TODO: wire this up in some sensible way
     @intro.start do
-      @state = :main_menu
+      $state = :main_menu
     end
   end
 
   def update
     VfxManager.update
     active_component.update
+    $fade.update
 
     super
   end
@@ -65,12 +69,13 @@ class Window < OZ::Window
   def draw
     VfxManager.draw
     active_component.draw
+    $fade.draw
 
     super
   end
 
   def active_component
-    case @state
+    case $state
     when :intro
       @intro
     when :main_menu
