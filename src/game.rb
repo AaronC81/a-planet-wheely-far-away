@@ -8,6 +8,9 @@ module Game
     $banner = BannerManager.new
 
     $player = PlayerCar.new
+
+    GunManager::SHOOTABLES_GROUP.items.clear
+    SpawnManager::OBSTACLES_GROUP.items.clear
   end
   
   def self.components

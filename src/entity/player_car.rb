@@ -117,10 +117,12 @@ class PlayerCar < OZ::Entity
             )
           end
           AssetLoader.play_sample("sample/poof.wav")
-
-          OZ::Scheduler.wait 20
-
-          # TODO: go to a game-over screen
+        
+          $banner.show_banner(AssetLoader.load_image("text/game_over.png")) do
+            $fade.fade do
+              $state = :main_menu
+            end
+          end
         end
       else
         5.times do
