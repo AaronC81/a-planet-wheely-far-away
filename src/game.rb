@@ -5,12 +5,13 @@ module Game
     $road = RoadManager.new
     $gun = GunManager.new
     $spawn = SpawnManager.new
+    $banner = BannerManager.new
 
     $player = PlayerCar.new
   end
   
   def self.components
-    [$road, $spawn, $gun, $player]
+    [$road, $spawn, $gun, $player, $banner]
   end
 
   def self.update

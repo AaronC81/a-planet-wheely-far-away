@@ -28,6 +28,7 @@ require_relative 'component/road_manager'
 require_relative 'component/gun_manager'
 require_relative 'component/spawn_manager'
 require_relative 'component/vfx_manager'
+require_relative 'component/banner_manager'
 require_relative 'component/intro'
 require_relative 'component/main_menu'
 
