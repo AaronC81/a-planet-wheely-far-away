@@ -8,14 +8,18 @@ class SpawnManager < OZ::Component
     @pickup_timer = 60*60
 
     @survival_time = 0
+
+    @has_spawned_mothership = false
   end
 
   def update
     @survival_time += 1
 
     # Speed up over time
-    $speed = 6 + ((@survival_time.to_f / 60) / 30)
     $speed_mph = 2 + ($speed * 5.5).round
+    unless $speed_mph >= 100
+      $speed = 6 + ((@survival_time.to_f / 60) / 30)
+    end
 
     OBSTACLES_GROUP.update
 
@@ -51,8 +55,17 @@ class SpawnManager < OZ::Component
       end
     end
     
+    if $speed_mph >= 100 && !@has_spawned_mothership
+      @has_spawned_mothership = true
+
+      $mothership = MothershipEnemy.new(
+        position: OZ::Point.new(1900, RoadManager::BUILDINGS_START),
+      )
+      $mothership.register(GunManager::SHOOTABLES_GROUP)
+    end
+
     @enemy_timer -= 1
-    if @enemy_timer <= 0
+    if @enemy_timer <= 0 && !@has_spawned_mothership
       klass = current_enemy_pool.sample
       klass.new(
         position: OZ::Point.new(1900, RoadManager.rand_y_for_obstacle(klass::IMAGE.height)),
