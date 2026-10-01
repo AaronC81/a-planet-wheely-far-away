@@ -48,7 +48,7 @@ class Enemy < OZ::Entity
   end
 
   def update
-    if self.position.x > @target_x &&
+    if self.position.x > @target_x
       self.rotation = -15 if @tilt_while_entering
       self.position.x -= @fly_in_speed
     else

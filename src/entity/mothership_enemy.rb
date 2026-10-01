@@ -13,7 +13,7 @@ class MothershipEnemy < Enemy
       **kw
     )
 
-    @tilt_while_entering = true
+    @tilt_while_entering = false
 
     # This wobbles exactly across stage if Y is BUILDINGS_START
     @wobble_time_divider = 60
