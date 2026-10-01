@@ -87,7 +87,11 @@ class SpawnManager < OZ::Component
 
     @pickup_timer -= 1
     if @pickup_timer <= 0
-      klass = [RapidPickup, HealPickup].sample
+      if $assist_mode
+        klass = RapidPickup
+      else
+        klass = [RapidPickup, HealPickup].sample
+      end
       klass.new.register(OBSTACLES_GROUP)
 
       @pickup_timer = rand((60*55)..(60*75))

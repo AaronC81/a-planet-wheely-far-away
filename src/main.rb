@@ -42,6 +42,8 @@ class Window < OZ::Window
   def initialize
     super(WIDTH, HEIGHT)
 
+    $assist_mode = false
+
     @main_menu = MainMenu.new do
       Game.reset
       $state = :game

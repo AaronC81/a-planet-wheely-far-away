@@ -9,6 +9,8 @@ class PlayerCar < OZ::Entity
 
   VERTICAL_SPEED = 6
 
+  ASSIST_FAKE_MAX_HP = 10000
+
   def initialize(**kw)
     super(
       position: OZ::Point.new(50, VERTICAL_CENTRE),
@@ -20,7 +22,11 @@ class PlayerCar < OZ::Entity
       **kw
     )
 
-    @hp = 5
+    if $assist_mode
+      @hp = ASSIST_FAKE_MAX_HP
+    else
+      @hp = 5
+    end
     @invulnerability_timer = 0
     @gone = false
   end

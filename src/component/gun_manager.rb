@@ -184,12 +184,20 @@ class GunManager < OZ::Component
     y = 30
     
     # We're drawing UI so we might as well be responsible for HP as well. Who cares really
-    clamped_hp = $player.hp
-    clamped_hp = 5 if clamped_hp > 5
-    clamped_hp = 0 if clamped_hp < 0
-      
-    image = AssetLoader.load_image("ui/hp_#{clamped_hp}.png")
-    image.draw(x, y)
+    if $assist_mode
+      image = AssetLoader.load_image("ui/hp_assist.png")
+      image.draw(x, y)
+
+      lost_hp = PlayerCar::ASSIST_FAKE_MAX_HP - $player.hp
+      DRUM_AMMO_FONT.draw_text_rel(lost_hp.to_s, x + image.width / 2, y + image.height / 2 - 10, 100001, 0.5, 0.5, 1, 1, Gosu::Color::WHITE)
+    else
+      clamped_hp = $player.hp
+      clamped_hp = 5 if clamped_hp > 5
+      clamped_hp = 0 if clamped_hp < 0
+        
+      image = AssetLoader.load_image("ui/hp_#{clamped_hp}.png")
+      image.draw(x, y)
+    end
 
     x = 180
     y += 10
