@@ -32,7 +32,7 @@ class Intro < OZ::Component
     end
   end
 
-  FONT = AssetLoader.load_system_font("Arial", 16)
+  FONT = AssetLoader.load_font("font/Ranchers-Regular.ttf", 24)
 
   # Preload
   AssetLoader.load_sample("sample/intro/glint.wav")

@@ -10,7 +10,7 @@ class GunManager < OZ::Component
   ROUND_SPENT_SPRITE = AssetLoader.load_image("ui/round_spent.png")
 
   DRUM_SPRITE = AssetLoader.load_image("ui/drum_mag.png")
-  DRUM_AMMO_FONT = AssetLoader.load_system_font("Arial", 56)
+  DRUM_AMMO_FONT = AssetLoader.load_font("font/Ranchers-Regular.ttf", 56)
 
   HEART_FULL_SPRITE = AssetLoader.load_image("ui/heart_full.png")
   HEART_EMPTY_SPRITE = AssetLoader.load_image("ui/heart_empty.png")

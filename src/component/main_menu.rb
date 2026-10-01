@@ -1,6 +1,6 @@
 class MainMenu < OZ::Component
-  FONT = AssetLoader.load_system_font("Arial", 24)
-  BUTTON_FONT = AssetLoader.load_system_font("Arial", 56)
+  FONT = AssetLoader.load_font("font/Ranchers-Regular.ttf", 24)
+  BUTTON_FONT = AssetLoader.load_font("font/Ranchers-Regular.ttf", 56)
 
   LOGO = AssetLoader.load_image("text/logo.png")
 
