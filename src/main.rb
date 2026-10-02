@@ -42,6 +42,9 @@ class Window < OZ::Window
   def initialize
     super(WIDTH, HEIGHT)
 
+    $window = self
+    @fullscreen = false
+
     $assist_mode = false
 
     @main_menu = MainMenu.new do
@@ -58,6 +61,11 @@ class Window < OZ::Window
     @intro.start do
       $state = :main_menu
     end
+  end
+
+  def toggle_fullscreen
+    @fullscreen = !@fullscreen
+    self.fullscreen = @fullscreen
   end
 
   def update

@@ -7,7 +7,8 @@ class MainMenu < OZ::Component
   LOGO = AssetLoader.load_image("text/logo.png")
 
   PLAY_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 400) / 2, 550), 400, 80)
-  ASSIST_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 700), 300, 70)
+  ASSIST_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 670), 300, 70)
+  FULLSCREEN_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 750), 300, 70)
 
   def initialize(&block)
     @starting = false
@@ -19,13 +20,9 @@ class MainMenu < OZ::Component
 
     LOGO.draw(50, 50)
 
-    colour = PLAY_BUTTON.point_inside?(OZ::Input.cursor) ? Gosu::Color.argb(255, 40, 40, 40) : Gosu::Color::BLACK
-    Gosu.draw_rect(PLAY_BUTTON.origin.x, PLAY_BUTTON.origin.y, PLAY_BUTTON.width, PLAY_BUTTON.height, colour)
-    BUTTON_FONT.draw_text_rel("Play!", PLAY_BUTTON.origin.x + PLAY_BUTTON.width / 2, PLAY_BUTTON.origin.y + PLAY_BUTTON.height / 2, 10000, 0.5, 0.5, 1.0, 1.0, Gosu::Color::WHITE)
-
-    colour = ASSIST_BUTTON.point_inside?(OZ::Input.cursor) ? Gosu::Color.argb(255, 40, 40, 40) : Gosu::Color::BLACK
-    Gosu.draw_rect(ASSIST_BUTTON.origin.x, ASSIST_BUTTON.origin.y, ASSIST_BUTTON.width, ASSIST_BUTTON.height, colour)
-    SMALL_BUTTON_FONT.draw_text_rel($assist_mode ? "[ON] Assist Mode" : "Assist Mode", ASSIST_BUTTON.origin.x + ASSIST_BUTTON.width / 2, ASSIST_BUTTON.origin.y + ASSIST_BUTTON.height / 2, 10000, 0.5, 0.5, 1.0, 1.0, Gosu::Color::WHITE)
+    draw_button(PLAY_BUTTON, "Play!", BUTTON_FONT)
+    draw_button(ASSIST_BUTTON, "Assist Mode", SMALL_BUTTON_FONT)
+    draw_button(FULLSCREEN_BUTTON, "Toggle Fullscreen", SMALL_BUTTON_FONT)
 
     if ASSIST_BUTTON.point_inside?(OZ::Input.cursor)
       FONT.draw_text("This game is intended to be challenging and tense.\nHowever, if it's too difficult but you'd still like to experience\nthe entire game, enable Assist Mode to prevent Game Overs.", ASSIST_BUTTON.origin.x + ASSIST_BUTTON.width + 20, ASSIST_BUTTON.origin.y, 10000, 1.0, 1.0, Gosu::Color::WHITE)
@@ -35,6 +32,12 @@ class MainMenu < OZ::Component
     FONT.draw_text("Created by Aaron Christiansen\nfor Gosu Game Jam 10\n\nSounds from Freesound: TODO", 20, Window::HEIGHT - 120, 10000, 1.0, 1.0, Gosu::Color::WHITE)
 
     draw_tutorial(700, 80)
+  end
+
+  def draw_button(box, text, font)
+    colour = box.point_inside?(OZ::Input.cursor) ? Gosu::Color.argb(255, 40, 40, 40) : Gosu::Color::BLACK
+    Gosu.draw_rect(box.origin.x, box.origin.y, box.width, box.height, colour)
+    font.draw_text_rel(text, box.origin.x + box.width / 2, box.origin.y + box.height / 2, 10000, 0.5, 0.5, 1.0, 1.0, Gosu::Color::WHITE)
   end
 
   def draw_tutorial(x, y)
@@ -61,6 +64,10 @@ class MainMenu < OZ::Component
 
       if ASSIST_BUTTON.point_inside?(OZ::Input.cursor)
         $assist_mode = !$assist_mode
+      end
+
+      if FULLSCREEN_BUTTON.point_inside?(OZ::Input.cursor)
+        $window.toggle_fullscreen
       end
     end
   end
