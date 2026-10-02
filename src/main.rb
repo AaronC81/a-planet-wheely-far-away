@@ -76,6 +76,10 @@ class Window < OZ::Window
     super
   end
 
+  def needs_cursor?
+    true
+  end
+
   def active_component
     case $state
     when :intro
