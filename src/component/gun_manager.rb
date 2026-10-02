@@ -73,7 +73,7 @@ class GunManager < OZ::Component
         @rapid_fire_cooldown = 7
       end
 
-      if @ammo > 0
+      if @ammo > 0 || @rapid_fire_remaining_ammo > 0
         # Cancel reload
         @is_reloading = false
         @cylinder_angle = 0
