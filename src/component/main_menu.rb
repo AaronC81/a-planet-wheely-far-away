@@ -18,7 +18,7 @@ class MainMenu < OZ::Component
   def draw
     Gosu.draw_rect(0, 0, Window::WIDTH, Window::HEIGHT, Gosu::Color.argb(255, 21, 21, 21))
 
-    LOGO.draw(50, 50)
+    LOGO.draw(150, 50)
 
     draw_button(PLAY_BUTTON, "Play!", BUTTON_FONT)
     draw_button(ASSIST_BUTTON, "Assist Mode", SMALL_BUTTON_FONT)
@@ -31,7 +31,7 @@ class MainMenu < OZ::Component
     # TODO: name and credits once font is chosen
     FONT.draw_text("Created by Aaron Christiansen\nfor Gosu Game Jam 10\n\nSounds from Freesound: TODO", 20, Window::HEIGHT - 120, 10000, 1.0, 1.0, Gosu::Color::WHITE)
 
-    draw_tutorial(700, 80)
+    draw_tutorial(950, 80)
   end
 
   def draw_button(box, text, font)
@@ -41,9 +41,9 @@ class MainMenu < OZ::Component
   end
 
   def draw_tutorial(x, y)
-    TUTORIAL_FONT.draw_text("Reach 100mph to get home!\nDodge obstacles and defeat enemies.", x, y, 10000, 1.0, 1.0, Gosu::Color::WHITE)
+    TUTORIAL_FONT.draw_text("Reach 100mph to get back home!\nDodge obstacles and defeat enemies.", x, y, 10000, 1.0, 1.0, Gosu::Color::WHITE)
 
-    TUTORIAL_FONT.draw_text("[W] Move up\n[S] Move down\n[Left-click] Fire gun\n[R] Reload gun", x, y + 100, 10000, 1.0, 1.0, Gosu::Color::WHITE)
+    TUTORIAL_FONT.draw_text("[W] Move up\n[S] Move down\n[Left-click] Fire gun (aim with cursor)\n[R] Reload gun", x, y + 100, 10000, 1.0, 1.0, Gosu::Color::WHITE)
 
     TUTORIAL_FONT.draw_text("Collect pickups:", x, y + 280, 10000, 1.0, 1.0, Gosu::Color::WHITE)
     AssetLoader.load_image("pickup/heal_pickup.png").draw(x + 190, y + 270, 10000, 0.8, 0.8)
