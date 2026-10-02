@@ -11,6 +11,8 @@ module Game
 
     GunManager::SHOOTABLES_GROUP.items.clear
     SpawnManager::OBSTACLES_GROUP.items.clear
+
+    AssetLoader.play_song("song/game.wav", volume: 0.25)
   end
   
   def self.components

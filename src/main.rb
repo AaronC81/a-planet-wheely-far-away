@@ -37,6 +37,9 @@ require_relative 'ext/orange_zest'
 
 require_relative 'game'
 Game.reset
+if Gosu::Song.current_song
+  Gosu::Song.current_song.stop
+end
 
 class Window < OZ::Window
   def initialize
