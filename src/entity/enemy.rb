@@ -18,12 +18,30 @@ class Enemy < OZ::Entity
     @tilt_while_entering = true
     @wobble_time_divider = 20
     @wobble_amount_divider = 2
+
+    @damage_effect_timer = 0
   end
 
   attr_reader :hp, :max_hp
 
   def fire
     raise 'abstract'
+  end
+
+  def draw
+    if @damage_effect_timer > 0
+      tint = Gosu::Color.new(opacity * 255, 255, 120, 120)
+    else
+      tint = Gosu::Color.new(opacity * 255, 255, 255, 255)
+    end
+
+    image.draw_rot(
+      position.x + (mirror_x ? image.width * scaling : 0), position.y, position.z,
+      rotation, 0, 0,
+      scaling * (mirror_x ? -1 : 1),
+      scaling,
+      tint,
+    )
   end
 
   def inflict_gun_damage(amount)
@@ -40,6 +58,8 @@ class Enemy < OZ::Entity
       )
 
       AssetLoader.play_sample("sample/poof.wav")
+    else
+      @damage_effect_timer = 5
     end
   end
 
@@ -48,6 +68,10 @@ class Enemy < OZ::Entity
   end
 
   def update
+    if @damage_effect_timer > 0
+      @damage_effect_timer -= 1
+    end
+
     if self.position.x > @target_x
       self.rotation = -15 if @tilt_while_entering
       self.position.x -= @fly_in_speed
