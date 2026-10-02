@@ -80,7 +80,7 @@ class RoadManager < OZ::Component
     if @in_desert
       Gosu.draw_rect(0, 0, Window::WIDTH, Window::HEIGHT, Gosu::Color.rgb(100, 175, 200))
     else
-      SPACE_BACKGROUND.draw(0, 0)
+      SPACE_BACKGROUND.draw(0, 0, 0)
     end
 
     # Background
@@ -92,7 +92,7 @@ class RoadManager < OZ::Component
         @bg_sprites << bg_buildings.sample
       end
 
-      @bg_sprites[i].draw(x, BUILDINGS_START - @bg_sprites[i].height)
+      @bg_sprites[i].draw(x, BUILDINGS_START - @bg_sprites[i].height, 0)
       x += @bg_sprites[i].width
       i += 1
     end
@@ -106,7 +106,7 @@ class RoadManager < OZ::Component
         @fg_sprites << fg_buildings.sample
       end
 
-      @fg_sprites[i].draw(x, BUILDINGS_START - @fg_sprites[i].height)
+      @fg_sprites[i].draw(x, BUILDINGS_START - @fg_sprites[i].height, 0)
       x += @fg_sprites[i].width - FG_OVERLAP
       i += 1
     end
@@ -118,7 +118,7 @@ class RoadManager < OZ::Component
     end
     x = @road_offset - road_image.width
     while x < Window::WIDTH
-      road_image.draw(x, BUILDINGS_START - 20)
+      road_image.draw(x, BUILDINGS_START - 20, 0)
       x += road_image.width - 20
     end
 

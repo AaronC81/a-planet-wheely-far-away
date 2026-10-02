@@ -56,7 +56,7 @@ solarpsychedelic
   def draw
     Gosu.draw_rect(0, 0, Window::WIDTH, Window::HEIGHT, Gosu::Color.argb(255, 21, 21, 21))
 
-    LOGO.draw(150, 50)
+    LOGO.draw(150, 50, 0)
 
     draw_button(PLAY_BUTTON, "Play!", BUTTON_FONT)
     draw_button(ASSIST_BUTTON, $assist_mode ? "[ON] Assist Mode" : "[OFF] Assist Mode", SMALL_BUTTON_FONT)
