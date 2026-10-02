@@ -40,7 +40,7 @@ class PlayerCar < OZ::Entity
 
     if @hp == 1
       self.animation = :critical
-      
+
       @low_hp_smoke_timer -= 1
       if @low_hp_smoke_timer <= 0
         @low_hp_smoke_timer = rand(10..60)
@@ -141,7 +141,7 @@ class PlayerCar < OZ::Entity
         
           $banner.show_banner(AssetLoader.load_image("text/game_over.png")) do
             $fade.fade do
-              $state = :main_menu
+              MainMenu.enter
             end
           end
         end

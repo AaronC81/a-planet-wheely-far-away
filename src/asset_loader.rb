@@ -2,6 +2,7 @@ module AssetLoader
   @@images = {}
   @@fonts = {}
   @@samples = {}
+  @@songs = {}
 
   def self.load_image(*path, retro: false)
     full_path = File.join(__dir__, '..', 'res', *path)
@@ -42,5 +43,22 @@ module AssetLoader
 
   def self.play_sample(*path, volume: 1.0)
     load_sample(*path).play($volume * volume)
+  end
+
+  def self.load_song(*path)
+    full_path = File.join(__dir__, '..', 'res', *path)
+    if @@songs.has_key?(full_path)
+      @@songs[full_path]
+    else
+      @@songs[full_path] = Gosu::Song.new(full_path)
+    end
+  end
+
+  def self.play_song(*path, volume: 1.0)
+    return unless $music
+
+    song = load_song(*path)
+    song.volume = $volume * volume
+    song.play(true)
   end
 end

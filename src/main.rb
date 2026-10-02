@@ -43,9 +43,10 @@ class Window < OZ::Window
     super(WIDTH, HEIGHT)
 
     $window = self
-    @fullscreen = false
+    $fullscreen = false
 
     $assist_mode = false
+    $music = true
 
     @main_menu = MainMenu.new do
       Game.reset
@@ -59,13 +60,13 @@ class Window < OZ::Window
 
     # TODO: wire this up in some sensible way
     @intro.start do
-      $state = :main_menu
+      MainMenu.enter
     end
   end
 
   def toggle_fullscreen
-    @fullscreen = !@fullscreen
-    self.fullscreen = @fullscreen
+    $fullscreen = !$fullscreen
+    self.fullscreen = $fullscreen
   end
 
   def update

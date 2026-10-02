@@ -67,7 +67,7 @@ class RoadManager < OZ::Component
 
         $banner.show_banner(AssetLoader.load_image("text/win.png")) do
           $fade.fade do
-            $state = :main_menu
+            MainMenu.enter
           end
         end
       end

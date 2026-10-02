@@ -6,13 +6,19 @@ class MainMenu < OZ::Component
 
   LOGO = AssetLoader.load_image("text/logo.png")
 
-  PLAY_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 400) / 2, 550), 400, 80)
-  ASSIST_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 670), 300, 70)
-  FULLSCREEN_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 750), 300, 70)
+  PLAY_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 400) / 2, 500), 400, 80)
+  ASSIST_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 600), 300, 70)
+  FULLSCREEN_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 690), 300, 70)
+  MUSIC_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 780), 300, 70)
 
   def initialize(&block)
     @starting = false
     @start_callback = block
+  end
+
+  def self.enter
+    AssetLoader.play_song("song/menu.wav")
+    $state = :main_menu
   end
 
   def draw
@@ -21,8 +27,9 @@ class MainMenu < OZ::Component
     LOGO.draw(150, 50)
 
     draw_button(PLAY_BUTTON, "Play!", BUTTON_FONT)
-    draw_button(ASSIST_BUTTON, "Assist Mode", SMALL_BUTTON_FONT)
-    draw_button(FULLSCREEN_BUTTON, "Toggle Fullscreen", SMALL_BUTTON_FONT)
+    draw_button(ASSIST_BUTTON, $assist_mode ? "[ON] Assist Mode" : "[OFF] Assist Mode", SMALL_BUTTON_FONT)
+    draw_button(FULLSCREEN_BUTTON, $fullscreen ? "[ON] Fullscreen" : "[OFF] Fullscreen", SMALL_BUTTON_FONT)
+    draw_button(MUSIC_BUTTON, $music ? "[ON] Music" : "[OFF] Music", SMALL_BUTTON_FONT)
 
     if ASSIST_BUTTON.point_inside?(OZ::Input.cursor)
       FONT.draw_text("This game is intended to be challenging and tense.\nHowever, if it's too difficult but you'd still like to experience\nthe entire game, enable Assist Mode to prevent Game Overs.", ASSIST_BUTTON.origin.x + ASSIST_BUTTON.width + 20, ASSIST_BUTTON.origin.y, 10000, 1.0, 1.0, Gosu::Color::WHITE)
@@ -68,6 +75,16 @@ class MainMenu < OZ::Component
 
       if FULLSCREEN_BUTTON.point_inside?(OZ::Input.cursor)
         $window.toggle_fullscreen
+      end
+
+      if MUSIC_BUTTON.point_inside?(OZ::Input.cursor)
+        $music = !$music
+
+        if Gosu::Song.current_song
+          Gosu::Song.current_song.stop
+        end
+
+        AssetLoader.play_song("song/menu.wav")
       end
     end
   end
