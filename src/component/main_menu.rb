@@ -3,6 +3,7 @@ class MainMenu < OZ::Component
   TUTORIAL_FONT = AssetLoader.load_font("font/Ranchers-Regular.ttf", 36)
   BUTTON_FONT = AssetLoader.load_font("font/Ranchers-Regular.ttf", 56)
   SMALL_BUTTON_FONT = AssetLoader.load_font("font/Ranchers-Regular.ttf", 48)
+  CREDIT_FONT = AssetLoader.load_font("font/Ranchers-Regular.ttf", 18)
 
   LOGO = AssetLoader.load_image("text/logo.png")
 
@@ -10,6 +11,37 @@ class MainMenu < OZ::Component
   ASSIST_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 600), 300, 70)
   FULLSCREEN_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 690), 300, 70)
   MUSIC_BUTTON = OZ::Box.new(OZ::Point.new((Window::WIDTH - 300) / 2, 780), 300, 70)
+
+  SAMPLE_CREDITS = %w[
+xXKRONOSXx
+eardeer
+Sophia_C
+mikiko850
+AceOfSpadesProduc100
+Sustainededed
+saangosu
+unfa
+SamsterBirdies
+moodyfingers
+eardeer
+morganpurkis
+EminYILDIRIM
+peepholecircus
+Kronos1001
+Sergenious
+bennychico11
+VSE00
+swifty433
+.Andre_Onate
+jppi_Stu
+phenoxy
+TomaszBuga
+Nox_Sound
+Yudena
+BrickDeveloper171
+StonedB
+solarpsychedelic
+]
 
   def initialize(&block)
     @starting = false
@@ -36,7 +68,19 @@ class MainMenu < OZ::Component
     end
 
     # TODO: name and credits once font is chosen
-    FONT.draw_text("Created by Aaron Christiansen\nfor Gosu Game Jam 10\n\nSounds from Freesound: TODO", 20, Window::HEIGHT - 120, 10000, 1.0, 1.0, Gosu::Color::WHITE)
+    FONT.draw_text("Created by Aaron Christiansen\nfor Gosu Game Jam 10", 20, Window::HEIGHT - 80, 10000, 1.0, 1.0, Gosu::Color::WHITE)
+
+    FONT.draw_text_rel("Sounds from Freesound:", Window::WIDTH - 20, Window::HEIGHT - 350, 10000, 1, 0.5, 1.0, 1.0, Gosu::Color::WHITE)
+    (SAMPLE_CREDITS.length/3).times do |i|
+      credits = SAMPLE_CREDITS[(i*3)..(i*3+2)]
+      CREDIT_FONT.draw_text_rel(credits.join(", "), Window::WIDTH - 20, Window::HEIGHT - 350 + 20 * (i + 1), 10000, 1, 0.5, 1.0, 1.0, Gosu::Color::WHITE)
+    end
+
+    FONT.draw_text_rel("Music:", Window::WIDTH - 20, Window::HEIGHT - 120, 10000, 1, 0.5, 1.0, 1.0, Gosu::Color::WHITE)
+    CREDIT_FONT.draw_text_rel("Menu: 'UNKNOWN_ENTITY' by GloryToTheMachine (Freesound)", Window::WIDTH - 20, Window::HEIGHT - 120 + 20, 10000, 1, 0.5, 1.0, 1.0, Gosu::Color::WHITE)
+    CREDIT_FONT.draw_text_rel("Game: 'Eighties Action' by Kevin MacLeod", Window::WIDTH - 20, Window::HEIGHT - 120 + 40, 10000, 1, 0.5, 1.0, 1.0, Gosu::Color::WHITE)
+
+    FONT.draw_text_rel("Icons from Icons8", Window::WIDTH - 20, Window::HEIGHT - 40, 10000, 1, 0.5, 1.0, 1.0, Gosu::Color::WHITE)
 
     draw_tutorial(950, 80)
   end
