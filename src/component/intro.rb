@@ -49,6 +49,7 @@ class Intro < OZ::Component
 
   def draw
     super
+    Gosu.draw_rect(0, 0, Window::WIDTH, Window::HEIGHT, Gosu::Color.argb(255, 21, 21, 21))
     FONT.draw_text("[Escape] Skip intro", 20, Window::HEIGHT - 50, 10000, 1.0, 1.0, Gosu::Color::WHITE)
   end
   
@@ -113,7 +114,9 @@ class Intro < OZ::Component
       AssetLoader.play_sample("sample/intro/ufo_abduct.wav")
       show_image "intro/9.png", :centre, :centre, 300
 
-      block.() if block
+      $fade.fade do
+        block.() if block
+      end
     end
   end
 
