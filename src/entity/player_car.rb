@@ -29,6 +29,8 @@ class PlayerCar < OZ::Entity
     end
     @invulnerability_timer = 0
     @gone = false
+
+    @low_hp_smoke_timer = 0
   end
 
   attr_accessor :hp
@@ -38,6 +40,19 @@ class PlayerCar < OZ::Entity
 
     if @hp == 1
       self.animation = :critical
+      
+      @low_hp_smoke_timer -= 1
+      if @low_hp_smoke_timer <= 0
+        @low_hp_smoke_timer = rand(10..60)
+        VfxManager.add_effect(
+          image: AssetLoader.load_image("particles/small_smoke.png"),
+          x: bounding_box.origin.x + bounding_box.width * 0.8,
+          y: bounding_box.origin.y + bounding_box.height / 2,
+          x_velocity: -$speed * 60,
+          rotation: rand(0...360),
+          duration: rand(0.35..0.45),
+        )
+      end
     elsif @hp <= 3
       self.animation = :damaged
     else
