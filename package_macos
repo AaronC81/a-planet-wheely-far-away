@@ -14,15 +14,15 @@ curl https://github.com/gosu/ruby-app/releases/download/v0.14.6.pre1/Ruby.app.zi
 unzip "$SCRIPT_DIR/build/macos/template.app.zip" -d "$SCRIPT_DIR/build/macos/app"
 
 # Rename
-mv "$SCRIPT_DIR/build/macos/app/Ruby.app" "$SCRIPT_DIR/build/macos/app/GGJ10.app"
+mv "$SCRIPT_DIR/build/macos/app/Ruby.app" "$SCRIPT_DIR/build/macos/app/APlanetWheelyFarAway.app"
 
 # Modify Info.plist
-INFO_PLIST="$SCRIPT_DIR/build/macos/app/GGJ10.app/Info.plist"
-defaults write "$INFO_PLIST" CFBundleIdentifier -string "cc.aaronc.GGJ10"
-defaults write "$INFO_PLIST" CFBundleName -string "GGJ10"
+INFO_PLIST="$SCRIPT_DIR/build/macos/app/APlanetWheelyFarAway.app/Info.plist"
+defaults write "$INFO_PLIST" CFBundleIdentifier -string "cc.aaronc.APlanetWheelyFarAway"
+defaults write "$INFO_PLIST" CFBundleName -string "APlanetWheelyFarAway"
 
 # Copy files in
-RESOURCES="$SCRIPT_DIR/build/macos/app/GGJ10.app/Contents/Resources"
+RESOURCES="$SCRIPT_DIR/build/macos/app/APlanetWheelyFarAway.app/Contents/Resources"
 mkdir "$RESOURCES/src"
 cp -r src/* "$RESOURCES/src"
 mkdir "$RESOURCES/res"
@@ -36,9 +36,9 @@ rm "$RESOURCES/main.rb"
 echo "\$LOAD_PATH << \"#{__dir__}/orange_zest/lib\" ; require_relative 'src/main.rb'" > "$RESOURCES/main.rb"
 
 # Ensure that the Ruby is marked as executable - this was causing problems when testing in a VM!
-chmod +x "$SCRIPT_DIR/build/macos/app/GGJ10.app/Contents/MacOS/Ruby"
+chmod +x "$SCRIPT_DIR/build/macos/app/APlanetWheelyFarAway.app/Contents/MacOS/Ruby"
 
 # Zip
 pushd "$SCRIPT_DIR/build/macos/app/"
-zip -r "$SCRIPT_DIR/build/macos/app/GGJ10.app.zip" "GGJ10.app"
+zip -r "$SCRIPT_DIR/build/macos/app/APlanetWheelyFarAway.app.zip" "APlanetWheelyFarAway.app"
 popd
