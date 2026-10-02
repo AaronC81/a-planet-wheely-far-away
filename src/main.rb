@@ -44,6 +44,7 @@ end
 class Window < OZ::Window
   def initialize
     super(WIDTH, HEIGHT)
+    self.caption = "A Planet Wheely Far Away"
 
     $window = self
     $fullscreen = false
