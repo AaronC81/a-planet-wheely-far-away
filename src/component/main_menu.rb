@@ -64,7 +64,7 @@ solarpsychedelic
     draw_button(MUSIC_BUTTON, $music ? "[ON] Music" : "[OFF] Music", SMALL_BUTTON_FONT)
 
     if ASSIST_BUTTON.point_inside?(OZ::Input.cursor)
-      FONT.draw_text("This game is intended to be challenging and tense.\nHowever, if it's too difficult but you'd still like to experience\nthe entire game, enable Assist Mode to prevent Game Overs.", ASSIST_BUTTON.origin.x + ASSIST_BUTTON.width + 20, ASSIST_BUTTON.origin.y, 10000, 1.0, 1.0, Gosu::Color::WHITE)
+      FONT.draw_text("This game is intended to be\nchallenging and tense.\nIf it's too difficult but you'd still\nlike to experience the entire\ngame, enable Assist Mode to\nprevent Game Overs.", ASSIST_BUTTON.origin.x + ASSIST_BUTTON.width + 20, ASSIST_BUTTON.origin.y, 10000, 1.0, 1.0, Gosu::Color::WHITE)
     end
 
     # TODO: name and credits once font is chosen
